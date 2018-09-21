@@ -1,40 +1,71 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: пк
-  Date: 16.09.2018
-  Time: 15:24
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Регистрация</title>
 </head>
 <body>
-
-<h2>Страница регистрации пользователя</h2>
-<c:forEach items="${messagesCol}" var="m">
-    ${m.name} : ${m.text} <br>
-</c:forEach>
-
-<hr>
-<hr>
-<%--modelAttribute тоде самое что и commandName на jsp. только на JSP!!!--%>
-<%--commandName используеться в 3 спринге и поддерживаеться в 4 для обратной совместимости--%>
-<springform:form method="post" action="/springforum/show" modelAttribute="mKey">
-    ник <springform:input type="text" path="name"/>
-    <springform:errors path="text"/>
+<center>
+    <h2>Регистрация нового пользователя</h2>
+    <hr>
     <br>
-    сообщение <springform:input type="text" path="text"/>
-    <springform:errors path="name"/>
-    <br>
-    <input type="submit" value="послать сообщение"/>
-</springform:form>
+    <h3>Введите данные</h3>
 
-<%--springform:form - рисует форму по обьекту--%>
-<%--springform:input - рисует инпут по полю обьекта--%>
-<%--springform:errors - обробаываем и показывает ошибки по поле обьекта если они есть--%>
+    <sf:form method="POST" action="/registr" modelAttribute="user_info">
+        <table align="center">
+            <tr>
+                <th><label for = "login_name">Пользователь:</label></th>
+                <td><sf:input id = "login_name" size="30" maxlength="30" type="text" path="login"/><br>
+                    <sf:errors path="login"/>
+                </td>
+            </tr>
+            <tr>
+                <th><label for = "pass_login">Пароль:</label></th>
+                <td><sf:input id="pass_login" size="30" maxlength="30" type="password" path="password"/>
+                    <small>минимум 6 символов</small><br>
+                    <sf:errors path="password"/>
+                </td>
+            </tr>
+            <tr>
+                <th><label for = "email_login">Почта:</label></th>
+                <td><sf:input id="email_login" size="30" maxlength="30" type="text" path="email"/><br>
+                    <sf:errors path="email"/>
+                </td>
+            </tr>
+            <tr>
+                <th><label for = "first_login">Имя:</label></th>
+                <td><sf:input id="first_login" size="30" maxlength="30" type="text" path="firstName"/><br>
+                    <sf:errors path="firstName"/>
+                </td>
+            </tr>
+            <tr>
+                <th><label for = "last_login">Фамилия:</label></th>
+                <td><sf:input id="last_login" size="30" maxlength="30" type="text" path="lastName"/><br>
+                    <sf:errors path="lastName"/>
+                </td>
+            </tr>
+
+        </table>
+        <p></p>
+
+        <div align="center" style="margin-top: 30px">
+            <input type="submit" value="Зарегистрироваться"/>
+        </div>
+
+    </sf:form>
+
+    <p></p>
+
+    <div align="center" style="margin-top: 30px">
+        <form action="/check" method="get">
+            <input type="submit" value="Авторизация"/>
+        </form>
+    </div>
+
+</center>
+
 </body>
 </html>

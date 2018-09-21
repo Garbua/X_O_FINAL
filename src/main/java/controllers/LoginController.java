@@ -20,37 +20,47 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 
-
-	@RequestMapping(value = "/check", method = RequestMethod.GET)
-	public String outUser(Model model){
-		model.addAttribute("user",new UserEntity());
-		return "pages/index";
-	}
-
-	@RequestMapping(value = "/check")
-	public String checkUser(HttpSession session, @Valid @ModelAttribute("user") UserEntity user,
-	                        BindingResult result, Model model){
-
-		if(result.hasErrors()){
-			return "pages/index";
-
-		}else{
-			if(userService.loginExists(user.getLogin())){
-				if(userService.passwordCorrect(user.getPassword(),user.getLogin())){
-					if(session.getAttribute("user")== null){
-						session.setAttribute("user", user);
-						return "redirect:/gameLogin";
-					}
-				}
-
-			}
-		}
-		return "pages/index";
-	}
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String displayHome(Model model){
+	public String displayHome(Model model) {
 		model.addAttribute("user", new UserEntity());
 		return "pages/index";
 	}
+
+
+	@RequestMapping(value = "/check", method = RequestMethod.GET)
+	public String outUser(Model model) {
+		model.addAttribute("user", new UserEntity());
+		return "pages/index";
+	}
+
+	@RequestMapping(value = "/check", method = RequestMethod.POST)
+	public String checkUser(HttpSession session, @Valid @ModelAttribute("user") UserEntity user,
+	                        BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return "pages/index";
+
+		} else {
+			if (userService.loginExists(user.getLogin())) {
+
+				if (userService.passwordCorrect(user.getPassword(), user.getLogin())) {
+
+					if (session.getAttribute("user") == null) {
+						session.setAttribute("user", user);
+						return "pages/gameLogin";
+					}
+					model.addAttribute("form_error", "Попробуйте войти ещё раз!");
+					return "pages/index";
+				} else {
+					model.addAttribute("form_error", "Неверный пароль!");
+					return "pages/index";
+				}
+			} else {
+				model.addAttribute("form_error", String.format("Пользователь %s не найден!", user.getLogin()));
+				return "pages/index";
+			}
+		}
+
+	}
 }
+

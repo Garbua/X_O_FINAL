@@ -18,25 +18,31 @@ public class UserEntity implements Serializable {
 	private Long id;
 
 	@Column
-	@NotNull
-	@Pattern(regexp =" ^[a-zA-Z0-9]+$", message = "Недопустимые символы в логине!")
-	@Size(min = 3, max = 16, message = "Недопустимая длинна логина!")
+	@NotNull(message = "поле не может быть пустым!")
+	@Size(min = 3, max = 30, message = "от 3 до 30 символов!")
 	private String login;
 
 	@Column
-	@NotNull
-	@Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Неверный email!")
+	@NotNull(message = "поле не может быть пустым!")
+	@Size(min = 6, max = 30, message = "от 6 до 30 символов!")
+	@Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Некорректный Email!!")
 	private String email;
 
 	@Column(name = "pass")
-	@NotNull
-	@Size(min = 6 , max = 20, message = "Недопустимая длинна пароля!")
+	@NotNull(message = "поле не может быть пустым!")
+	@Size(min = 6 , max = 30, message = "от 6 до 30 символов!")
 	private String password;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "profile_id")
-	@NotNull
-	private Profile profile;
+	@Column(name = "firstName")
+	@NotNull(message = "поле не может быть пустым!")
+	@Size(min = 4, max = 30, message = "от 6 до 30 символов!")
+	private String firstName;
+
+	@Column(name = "lastName")
+	@NotNull(message = "поле не может быть пустым!")
+	@Size(min = 4, max = 30,message = "от 6 до 30 символов!")
+	private String lastName;
+
 
 
 	public UserEntity() {
@@ -66,7 +72,6 @@ public class UserEntity implements Serializable {
 		this.email = email;
 	}
 
-
 	public String getPassword() {
 		return password;
 	}
@@ -75,12 +80,20 @@ public class UserEntity implements Serializable {
 		this.password = password;
 	}
 
-	public Profile getProfile() {
-		return profile;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Override
@@ -90,6 +103,8 @@ public class UserEntity implements Serializable {
 				", login='" + login + '\'' +
 				", email='" + email + '\'' +
 				", password='" + password + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
 				'}';
 	}
 }

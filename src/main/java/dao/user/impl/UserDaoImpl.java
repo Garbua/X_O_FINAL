@@ -58,7 +58,7 @@ public class UserDaoImpl implements UserDAO {
 
 	@Override
 	public boolean passwordCorrect(String pass, String login) {
-		String userHQL = "FROM UserEntity WHERE pass = : pass AND login = : login";
+		String userHQL = "FROM UserEntity WHERE pass = :pass AND login = :login";
 		Query query = sessionFactory.getCurrentSession().createQuery(userHQL);
 		query.setParameter("pass", pass);
 		query.setParameter("login", login);
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDAO {
 
 	@Override
 	public boolean loginExists(String login) {
-		String userHQL = "FROM UserEntity WHERE login = : login";
+		String userHQL = "FROM UserEntity WHERE login = :login";
 		Query query = sessionFactory.getCurrentSession().createQuery(userHQL);
 		query.setParameter("login", login);
 		return query.list().size() > 0;
@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDAO {
 
 	@Override
 	public boolean emailExists(String email) {
-		String userHQL = "FROM UserEntity WHERE email = : email";
+		String userHQL = "FROM UserEntity WHERE email = :email";
 		Query query = sessionFactory.getCurrentSession().createQuery(userHQL);
 		query.setParameter("email", email);
 
