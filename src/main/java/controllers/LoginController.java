@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import service.user.UserService;
+import service.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -19,12 +19,6 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String displayHome(Model model) {
-		model.addAttribute("user", new UserEntity());
-		return "pages/index";
-	}
 
 
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
@@ -56,7 +50,7 @@ public class LoginController {
 					return "pages/index";
 				}
 			} else {
-				model.addAttribute("form_error", String.format("Пользователь %s не найден!", user.getLogin()));
+				model.addAttribute("form_error", "Пользователь не найден!");
 				return "pages/index";
 			}
 		}

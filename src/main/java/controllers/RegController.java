@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import service.user.UserService;
+import service.UserService;
 
 import javax.validation.Valid;
 
@@ -23,8 +23,8 @@ public class RegController {
 
 	@ResponseBody
 	@RequestMapping(value = "/registr", method = RequestMethod.POST)
-	public String Registration(Model model,
-	                           @Valid @ModelAttribute("user_info") UserEntity userEntity, BindingResult result) {
+	public String Registration(@Valid @ModelAttribute("user_info") UserEntity userEntity, BindingResult result,
+	                           Model model) {
 		if(result.hasErrors()){
 			return "pages/registrationPage";
 		}else {

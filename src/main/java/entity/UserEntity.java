@@ -19,28 +19,28 @@ public class UserEntity implements Serializable {
 
 	@Column
 	@NotNull(message = "поле не может быть пустым!")
-	@Size(min = 3, max = 30, message = "от 3 до 30 символов!")
+	@Size(min = 3, max = 30, message = "минимум 3 символа!")
 	private String login;
 
 	@Column
 	@NotNull(message = "поле не может быть пустым!")
-	@Size(min = 6, max = 30, message = "от 6 до 30 символов!")
+	@Size(min = 6, max = 30, message = "минимум 6 символов!")
 	@Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Некорректный Email!!")
 	private String email;
 
 	@Column(name = "pass")
 	@NotNull(message = "поле не может быть пустым!")
-	@Size(min = 6 , max = 30, message = "от 6 до 30 символов!")
+	@Size(min = 6 , max = 30, message = "минимум 6 символов!")
 	private String password;
 
 	@Column(name = "firstName")
 	@NotNull(message = "поле не может быть пустым!")
-	@Size(min = 4, max = 30, message = "от 6 до 30 символов!")
+	@Size(min = 4, max = 30, message = "минимум 4 символа!")
 	private String firstName;
 
 	@Column(name = "lastName")
 	@NotNull(message = "поле не может быть пустым!")
-	@Size(min = 4, max = 30,message = "от 6 до 30 символов!")
+	@Size(min = 4, max = 30,message = "минимум 4 символа!")
 	private String lastName;
 
 

@@ -5,6 +5,11 @@
 <html>
 <head>
     <title>Крестики нолики</title>
+    <style type="text/css">
+        span.error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <center>
@@ -12,7 +17,7 @@
 <hr>
 <br>
     <h3 align="center">
-        <c:if test="${''.equals(form_error)}">
+        <c:if test="${!''.equals(form_error)}">
             <b>${form_error} </b>
         </c:if>
     </h3>
@@ -20,27 +25,27 @@
 
 <sf:form method="POST" action="/check" modelAttribute="user">
     <table align="center">
+
         <tr>
             <th><label for = "login_name">Пользователь:</label></th>
-            <td><sf:input id = "login_name" size="20" maxlength="20" type="text" path="login"/>
-                <small>максимум 16 символов</small><br>
-                <sf:errors path="login"/>
-            </td>
+            <td><sf:input id = "login_name" size="30" type="text" path="login"/></td>
+            <td><span class="error"> <sf:errors path="login"/></span></td>
         </tr>
-        <br>
+
         <tr>
             <th><label for = "pass_login">Пароль:</label></th>
-            <td><sf:input id="pass_login" size="20" maxlength="20" type="password" path="password"/>
-                <small>минимум 6 символов</small><br>
-                <sf:errors path="password"/>
-            </td>
+            <td><sf:input id="pass_login" size="30" type="password" path="password"/></td>
+            <td><span class="error"> <sf:errors path="password"/></span></td>
         </tr>
-        <br>
+
     </table>
+
     <p></p>
+
     <div align="center" style="margin-top: 30px">
-            <input type="submit" value="Войти"/>
+        <input type="submit" value="Войти"/>
     </div>
+
 
 </sf:form>
 

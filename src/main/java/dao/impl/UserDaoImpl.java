@@ -1,14 +1,14 @@
-package dao.user.impl;
+package dao.impl;
 
-import dao.user.UserDAO;
+import dao.UserDAO;
 import entity.UserEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -21,7 +21,8 @@ public class UserDaoImpl implements UserDAO {
 //	@Autowired
 //	private MessageSource messageSource;
 
-	@Resource(name = "sessionFactory")
+//	@Resource(name = "sessionFactory")
+	@Autowired
 	public SessionFactory sessionFactory;
 
 	@Override
