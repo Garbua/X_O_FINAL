@@ -23,18 +23,18 @@
     </h3>
     <br>
 
-<sf:form method="POST" action="/check" modelAttribute="user">
+<sf:form method="POST" action="/login" modelAttribute="userDTO">
     <table align="center">
 
         <tr>
             <th><label for = "login_name">Пользователь:</label></th>
-            <td><sf:input id = "login_name" size="30" type="text" path="login"/></td>
+            <td><sf:input id = "login_name" type="text" path="login"/></td>
             <td><span class="error"> <sf:errors path="login"/></span></td>
         </tr>
 
         <tr>
             <th><label for = "pass_login">Пароль:</label></th>
-            <td><sf:input id="pass_login" size="30" type="password" path="password"/></td>
+            <td><sf:input id="pass_login" type="password" path="password"/></td>
             <td><span class="error"> <sf:errors path="password"/></span></td>
         </tr>
 
@@ -52,7 +52,7 @@
     <p></p>
 
     <div align="center" style="margin-top: 30px">
-        <form action="/registr" method="get">
+        <form action="/registration" method="get">
             <input type="submit" value="Регистрация"/>
         </form>
     </div>

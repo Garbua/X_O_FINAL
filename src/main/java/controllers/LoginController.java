@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.UserDTO;
 import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,33 +15,33 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping()
+@RequestMapping(value ="/login")
 public class LoginController {
 
 	@Autowired
 	private UserService userService;
 
 
-	@RequestMapping(value = "/check", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String outUser(Model model) {
-		model.addAttribute("user", new UserEntity());
+		model.addAttribute("userDTO", new UserDTO());
 		return "pages/index";
 	}
 
-	@RequestMapping(value = "/check", method = RequestMethod.POST)
-	public String checkUser(HttpSession session, @Valid @ModelAttribute("user") UserEntity user,
-	                        BindingResult result, Model model) {
+	@RequestMapping(method = RequestMethod.POST)
+	public String checkUser(Model model, HttpSession session, @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+	                        BindingResult result ) {
 
 		if (result.hasErrors()) {
 			return "pages/index";
 
 		} else {
-			if (userService.loginExists(user.getLogin())) {
+			if (userService.loginExists(userDTO.getLogin())) {
 
-				if (userService.passwordCorrect(user.getPassword(), user.getLogin())) {
+				if (userService.passwordCorrect(userDTO.getPassword(), userDTO.getLogin())) {
 
-					if (session.getAttribute("user") == null) {
-						session.setAttribute("user", user);
+					if (session.getAttribute("userDTO") == null) {
+						session.setAttribute("userDTO", userDTO);
 						return "pages/gameLogin";
 					}
 					model.addAttribute("form_error", "Попробуйте войти ещё раз!");

@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.UserDTO;
 import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,23 +9,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import service.UserService;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping()
+@RequestMapping(value = "/registration")
 public class RegController {
 
 	@Autowired
 	UserService userService;
 
 
-	@ResponseBody
-	@RequestMapping(value = "/registr", method = RequestMethod.POST)
-	public String Registration(@Valid @ModelAttribute("user_info") UserEntity userEntity, BindingResult result,
-	                           Model model) {
+	@RequestMapping(method = {RequestMethod.POST})
+	public String Registration(Model model,@Valid @ModelAttribute("user_info") UserEntity userEntity,
+	                           BindingResult result) {
 		if(result.hasErrors()){
 			return "pages/registrationPage";
 		}else {
@@ -35,6 +34,7 @@ public class RegController {
 					return "pages/registrationPage";
 				}else {
 					try{
+						model.addAttribute("userDTO", new UserDTO());
 						userService.createUser(userEntity);
 					}catch (Exception e){
 						e.getStackTrace();
@@ -46,7 +46,7 @@ public class RegController {
 	}
 
 
-	@RequestMapping(value = "/registr", method = RequestMethod.GET)
+	@RequestMapping( method = RequestMethod.GET)
 	public String displayUser(Model model){
 
 		model.addAttribute("user_info",new UserEntity());
