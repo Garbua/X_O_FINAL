@@ -1,7 +1,7 @@
 package controllers;
-
-import dto.UserDTO;
 import entity.UserEntity;
+import entity.validator.RegValidatorDb;
+import entity.validator.UserEntityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import service.UserService;
-
 import javax.validation.Valid;
 
 @Controller
@@ -18,30 +16,22 @@ import javax.validation.Valid;
 public class RegController {
 
 	@Autowired
-	UserService userService;
+	private UserEntityValidator regValidator;
+
+	@Autowired
+	private RegValidatorDb regValidatorDb;
 
 
 	@RequestMapping(method = {RequestMethod.POST})
 	public String Registration(Model model,@Valid @ModelAttribute("user_info") UserEntity userEntity,
 	                           BindingResult result) {
+
+		regValidator.validate(userEntity, result);
+
 		if(result.hasErrors()){
 			return "pages/registrationPage";
 		}else {
-			if(userService.loginExists(userEntity.getLogin())){
-				return "pages/registrationPage";
-			}else {
-				if(userService.emailExists(userEntity.getEmail())){
-					return "pages/registrationPage";
-				}else {
-					try{
-						model.addAttribute("userDTO", new UserDTO());
-						userService.createUser(userEntity);
-					}catch (Exception e){
-						e.getStackTrace();
-					}
-					return "pages/index";
-				}
-			}
+			return regValidatorDb.regValidDb(model,userEntity);
 		}
 	}
 

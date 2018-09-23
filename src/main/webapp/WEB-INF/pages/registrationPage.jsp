@@ -1,11 +1,11 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Регистрация</title>
+    <title><spring:message code="label.sub.registr"></spring:message></title>
     <style type="text/css">
         span.error {
             color: red;
@@ -13,41 +13,60 @@
     </style>
 </head>
 <body>
+<span style="float: right">
+    <a href="?lang=en">en</a>
+    |
+    <a href="?lang=ru">ru</a>
+</span>
 <center>
-    <h2>Регистрация нового пользователя</h2>
+    <h2><spring:message code="label.reg.new"></spring:message></h2>
     <hr>
     <br>
-    <h3>Введите данные</h3>
+    <h3><spring:message code="label.reg.info"></spring:message></h3>
+    <hr>
+    <br>
+    <h3 align="center">
+       <span class="error"> <c:if test="${!''.equals(reg_very)}">
+           <b>${reg_very} </b>
+       </c:if>
+       </span>
+    </h3>
+    <br>
 
-    <sf:form method="POST" action="/registr" modelAttribute="user_info">
+    <sf:form method="POST" action="/registration" modelAttribute="user_info">
         <table align="center">
 
             <tr>
-                <th><label for = "login_name">Пользователь:</label></th>
+                <spring:message code="label.login" var="login"></spring:message>
+                <th><label for = "login_name">${login}</label></th>
                 <td><sf:input id = "login_name" size="30" type="text" path="login"/></td>
                 <td><span class="error"> <sf:errors path="login"/></span></td>
             </tr>
 
             <tr>
-                <th><label for = "pass_login">Пароль:</label></th>
+                <spring:message code="label.password" var="pass"></spring:message>
+                <th><label for = "pass_login">${pass}</label></th>
                 <td><sf:input id="pass_login" size="30" type="password" path="password"/></td>
                 <td><span class="error"> <sf:errors path="password"/></span></td>
             </tr>
 
             <tr>
-                <th><label for = "email_login">Почта:</label></th>
+                <spring:message code="label.email" var="email"></spring:message>
+                <th><label for = "email_login">${email}</label></th>
                 <td><sf:input id="email_login" size="30" type="text" path="email"/></td>
                 <td><span class="error"> <sf:errors path="email"/></span></td>
             </tr>
 
             <tr>
-                <th><label for = "first_login">Имя:</label></th>
+                <spring:message code="label.firstName" var="first"></spring:message>
+                <th><label for = "first_login">${first}</label></th>
                 <td><sf:input id="first_login" size="30" type="text" path="firstName"/></td>
                 <td><span class="error"> <sf:errors path="firstName"/></span></td>
             </tr>
 
             <tr>
-                <th><label for = "last_login">Фамилия:</label></th>
+                <spring:message code="label.lastName" var="last"></spring:message>
+                <th><label for = "last_login">${last}</label></th>
                 <td><sf:input id="last_login" size="30" type="text" path="lastName"/></td>
                 <td><span class="error"><sf:errors path="lastName"/></span> </td>
             </tr>
@@ -57,7 +76,8 @@
         <p></p>
 
         <div align="center" style="margin-top: 30px">
-            <input type="submit" value="Зарегистрироваться"/>
+            <spring:message code="label.sub.registr2" var="reg2"></spring:message>
+            <input type="submit" value="${reg2}"/>
         </div>
 
     </sf:form>
@@ -66,7 +86,8 @@
 
     <div align="center" style="margin-top: 30px">
         <form action="/check" method="get">
-            <input type="submit" value="Авторизация"/>
+            <spring:message code="label.authorization" var="authorization"></spring:message>
+            <input type="submit" value="${authorization}"/>
         </form>
     </div>
 
