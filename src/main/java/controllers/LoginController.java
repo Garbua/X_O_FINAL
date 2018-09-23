@@ -36,7 +36,7 @@ public class LoginController {
 		loginValid.validate(userDTO, result);
 
 		if (result.hasErrors()) {
-			return "pages/index";
+			return "pages/gindex";
 
 		} else {
 			return loginValidDb.validLoginDb(model, session, userDTO);
