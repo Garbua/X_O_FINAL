@@ -12,6 +12,11 @@
     </style>
 </head>
 <body>
+
+<c:if test="${sessionScope.get('userDTO') ne null}">
+    ${pageContext.forward("/gamelogin")}
+</c:if>
+
 <span style="float: right">
     <a href="?lang=en">en</a>
     |

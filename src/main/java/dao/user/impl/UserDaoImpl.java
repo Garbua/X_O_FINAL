@@ -26,6 +26,7 @@ public class UserDaoImpl implements UserDAO {
 	@Autowired
 	public SessionFactory sessionFactory;
 
+
 	/**
 	 * Метод поиска пользователя в БД по его логину
 	 * @param login - пользователь который передаётся в запрос поиска в БД

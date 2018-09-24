@@ -13,6 +13,11 @@
     </style>
 </head>
 <body>
+
+<c:if test="${sessionScope.get('userDTO') ne null}">
+    ${pageContext.forward("/gamelogin")}
+</c:if>
+
 <span style="float: right">
     <a href="?lang=en">en</a>
     |
@@ -27,13 +32,14 @@
     <br>
     <h3 align="center">
         <spring:message code="label.reg.eslogin" var="eslogin"></spring:message>
-        <spring:message code="label.reg.espass" var="espass"></spring:message>
-       <span class="error"> <c:choose>
+        <spring:message code="label.reg.esemail" var="esemail"></spring:message>
+       <span class="error">
+           <c:choose>
            <c:when test="${'0'.equals(reg_very)}">
                <b>${eslogin}</b>
            </c:when>
            <c:when test="${'1'.equals(reg_very)}">
-               <b>${espass}</b>
+               <b>${esemail}</b>
            </c:when>
            <c:otherwise></c:otherwise>
        </c:choose>

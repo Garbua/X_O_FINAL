@@ -28,10 +28,10 @@ public class LoginValidDb {
 
 				if (session.getAttribute("userDTO") == null) {
 					session.setAttribute("userDTO", userDTO);
-					return "redirect:/pages/gameLogin";
+					return "/pages/gameLogin";
 				}
 				model.addAttribute("form_error", "0");
-				return "pages/index";
+				return "pages/gameLogin";
 			} else {
 				model.addAttribute("form_error", "1");
 				return "pages/index";

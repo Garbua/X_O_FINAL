@@ -20,7 +20,7 @@
 <spring:message code="label.profile" var="prof"></spring:message>
 <spring:message code="label.exit" var="exit"></spring:message>
 <div align="right">
-    <prf:ProfileTag userDTO="Garbua" login="${login}">
+    <prf:ProfileTag userDTO="${sessionScope.userDTO.login}" login="${login}">
         <a href="/profile"> ${prof} <br> </a>
         <div align="right" style="margin-top: 30px">
             <form action="/login/exit" method="get">
