@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/registration")
-public class RegController {
+public class RegController extends ExceptionHandlerController {
 
 	@Autowired
 	private UserEntityValidator regValidator;
@@ -21,7 +21,14 @@ public class RegController {
 	@Autowired
 	private RegValidatorDb regValidatorDb;
 
-
+	/**
+	 * Метод POST регистрации нового пользователя
+	 * @param model
+	 * @param userEntity - объект нового пользователя с заполненными полями
+	 * @param result - содержит ошибки валидации
+	 * @return - если есть ошибки - вернуть обратно на страницу регистрации,
+	 * если нет - передать в метод валидации введённые данные для проверки .
+	 */
 	@RequestMapping(method = {RequestMethod.POST})
 	public String Registration(Model model,@Valid @ModelAttribute("user_info") UserEntity userEntity,
 	                           BindingResult result) {
@@ -35,7 +42,11 @@ public class RegController {
 		}
 	}
 
-
+	/**
+	 * Метод GET метода регистрации
+	 * @param model - объект нового пользователя
+	 * @return - страница регистрации
+	 */
 	@RequestMapping( method = RequestMethod.GET)
 	public String displayUser(Model model){
 

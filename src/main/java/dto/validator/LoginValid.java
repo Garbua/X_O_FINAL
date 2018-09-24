@@ -13,6 +13,11 @@ public class LoginValid implements Validator {
 		return UserDTO.class.isAssignableFrom(aClass);
 	}
 
+	/**
+	 * Метод проверки введённых данных при авторизации
+	 * @param o - объект для проверки с полями : пользователь и пароль
+	 * @param errors - содержит сообщение о некорректно введённых данных
+	 */
 	@Override
 	public void validate(Object o, Errors errors) {
 	UserDTO userDTO = (UserDTO) o;

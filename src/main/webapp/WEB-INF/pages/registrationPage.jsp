@@ -26,9 +26,17 @@
     <hr>
     <br>
     <h3 align="center">
-       <span class="error"> <c:if test="${!''.equals(reg_very)}">
-           <b>${reg_very} </b>
-       </c:if>
+        <spring:message code="label.reg.eslogin" var="eslogin"></spring:message>
+        <spring:message code="label.reg.espass" var="espass"></spring:message>
+       <span class="error"> <c:choose>
+           <c:when test="${'0'.equals(reg_very)}">
+               <b>${eslogin}</b>
+           </c:when>
+           <c:when test="${'1'.equals(reg_very)}">
+               <b>${espass}</b>
+           </c:when>
+           <c:otherwise></c:otherwise>
+       </c:choose>
        </span>
     </h3>
     <br>
@@ -85,7 +93,7 @@
     <p></p>
 
     <div align="center" style="margin-top: 30px">
-        <form action="/check" method="get">
+        <form action="/login" method="get">
             <spring:message code="label.authorization" var="authorization"></spring:message>
             <input type="submit" value="${authorization}"/>
         </form>

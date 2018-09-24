@@ -18,20 +18,34 @@
     <a href="?lang=ru">ru</a>
 </span>
 <center>
-<h2><spring:message code="label.authorization"></spring:message></h2>
+    <spring:message code="label.authorization" var="authoriz"></spring:message>
+<h2>${authoriz}</h2>
 <hr>
 <br>
+    <spring:message code="label.error0" var="errror0"></spring:message>
+    <spring:message code="label.error1" var="errror1"></spring:message>
+    <spring:message code="label.error2" var="errror2"></spring:message>
     <h3 align="center">
        <span class="error">
-           <c:if test="${!''.equals(form_error)}">
-               <b>${form_error} </b>
-           </c:if>
+               <c:choose>
+                   <c:when test="${'0'.equals(form_error)}">
+                       <b>${errror0}</b>
+                   </c:when>
+                   <c:when test="${'1'.equals(form_error)}">
+                       <b>${errror1}</b>
+                   </c:when>
+                   <c:when test="${'2'.equals(form_error)}">
+                       <b>${errror2}</b>
+                   </c:when>
+                   <c:otherwise></c:otherwise>
+               </c:choose>
        </span>
     </h3>
     <br>
     <h3 align="center">
-       <span class="error"> <c:if test="${!''.equals(reg_very)}">
-           <b>${reg_very} </b>
+        <spring:message code="label.addnewuser" var="succes"></spring:message>
+       <span class="error"> <c:if test="${'success'.equals(reg_very)}">
+           <b>${succes} </b>
        </c:if>
        </span>
     </h3>

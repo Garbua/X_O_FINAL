@@ -14,7 +14,13 @@ public class LoginValidDb {
 	@Autowired
 	private UserService userService;
 
-
+	/**
+	 * Метод проверки существует ли пользователь и его пароль в БД
+	 * @param model - записываются сообщения о том что пользователь не найден или пароль не найден
+	 * @param session - записывается в сессию пользователь и его пароль
+	 * @param userDTO - объект с полями: пользователь и пароль
+	 * @return - если пользователя и его пароля нет в БД - страницу авторизации, если есть в БД - на страницу профиля
+	 */
 	public String validLoginDb(Model model, HttpSession session,UserDTO userDTO){
 		if (userService.loginExists(userDTO.getLogin())) {
 
@@ -22,16 +28,16 @@ public class LoginValidDb {
 
 				if (session.getAttribute("userDTO") == null) {
 					session.setAttribute("userDTO", userDTO);
-					return "pages/gameLogin";
+					return "redirect:/pages/gameLogin";
 				}
-				model.addAttribute("form_error", "Попробуйте войти ещё раз!");
+				model.addAttribute("form_error", "0");
 				return "pages/index";
 			} else {
-				model.addAttribute("form_error", "Неверный пароль!");
+				model.addAttribute("form_error", "1");
 				return "pages/index";
 			}
 		} else {
-			model.addAttribute("form_error", String.format("Пользователь <b>%s </b> не найден!",
+			model.addAttribute("form_error", String.format("2",
 					userDTO.getLogin()));
 			return "pages/index";
 		}

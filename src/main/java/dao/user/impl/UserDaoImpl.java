@@ -26,6 +26,11 @@ public class UserDaoImpl implements UserDAO {
 	@Autowired
 	public SessionFactory sessionFactory;
 
+	/**
+	 * Метод поиска пользователя в БД по его логину
+	 * @param login - пользователь который передаётся в запрос поиска в БД
+	 * @return - результат поиска
+	 */
 	@Override
 	public UserEntity getUserByLogin(String login) {
 		String userHQL = "FROM UserEntity WHERE login = :login";
@@ -35,6 +40,11 @@ public class UserDaoImpl implements UserDAO {
 		return (UserEntity) query.uniqueResult();
 	}
 
+	/**
+	 * Метод записи нового пользователя в БД.
+	 * @param user - переданный объект пользователя для записи в БД.
+	 * @return - сохранённый пользователь
+	 */
 	@Override
 	public UserEntity createUser(UserEntity user) {
 		sessionFactory.getCurrentSession().save(user);
@@ -42,6 +52,10 @@ public class UserDaoImpl implements UserDAO {
 		return user;
 	}
 
+	/**
+	 * Метод редактирования данных пользователя в БД
+	 * @param user -  редактруемый объект пользователя
+	 */
 	@Override
 	public void updateUser(UserEntity user) {
 		UserEntity mergedUser = (UserEntity) sessionFactory.getCurrentSession().merge(user);
@@ -50,6 +64,10 @@ public class UserDaoImpl implements UserDAO {
 
 	}
 
+	/**
+	 * Метод удаления пользователя из БД
+	 * @param user - удаляемый объект пользователя
+	 */
 	@Override
 	public void deleteUser(UserEntity user) {
 		UserEntity mergedUser = (UserEntity) sessionFactory.getCurrentSession().merge(user);
@@ -58,6 +76,12 @@ public class UserDaoImpl implements UserDAO {
 
 	}
 
+	/**
+	 * Метод проверки существует ли в БД такой пароль у пользователя
+	 * @param pass - проверяемый пароль
+	 * @param login - пользователь у которого проверяется пароль
+	 * @return - если пароль есть в БД - true , если нет - false.
+	 */
 	@Override
 	public boolean passwordCorrect(String pass, String login) {
 		String userHQL = "FROM UserEntity WHERE pass = :pass AND login = :login";
@@ -70,6 +94,11 @@ public class UserDaoImpl implements UserDAO {
 		return userEntityes.size() > 0;
 	}
 
+	/**
+	 * Метод проверки пользователя в БД
+	 * @param login - имя пользователя для проверки
+	 * @return - если пользователь есть в БД - true , если нет - false.
+	 */
 	@Override
 	public boolean loginExists(String login) {
 		String userHQL = "FROM UserEntity WHERE login = :login";
@@ -78,6 +107,11 @@ public class UserDaoImpl implements UserDAO {
 		return query.list().size() > 0;
 	}
 
+	/**
+	 * Метод проверки почты в БД
+	 * @param email - адресс почты для проверки
+	 * @return - если почта есть в БД - true , если нет - false.
+	 */
 	@Override
 	public boolean emailExists(String email) {
 		String userHQL = "FROM UserEntity WHERE email = :email";
@@ -86,6 +120,6 @@ public class UserDaoImpl implements UserDAO {
 
 		List userEntityes = query.list();
 
-		return userEntityes.size() > 0;
+		return  userEntityes.size() > 0;
 	}
 }

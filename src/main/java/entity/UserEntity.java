@@ -3,6 +3,7 @@ package entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {
@@ -26,7 +27,6 @@ public class UserEntity implements Serializable {
 
 	@Column(name = "lastName")
 	private String lastName;
-
 
 
 	public UserEntity() {

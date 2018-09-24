@@ -15,6 +15,11 @@ public class UserEntityValidator implements Validator {
 		return UserEntity.class.isAssignableFrom(aClass);
 	}
 
+	/**
+	 * Метод проверки введённых данных нового пользователя на корректность
+	 * @param o - объект нового пользователя
+	 * @param errors - сообщения о некорректно введённых данных
+	 */
 	@Override
 	public void validate(Object o, Errors errors) {
 		UserEntity userEntity = (UserEntity) o;

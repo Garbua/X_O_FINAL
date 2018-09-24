@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class HomeController {
+
+	/**
+	 * Метод GET стартовой страницы
+	 * @param model - объект с полями : логин и пароль
+	 * @return - страница авторизации
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String displayHome(Model model) {
 		model.addAttribute("userDTO", new UserDTO());
