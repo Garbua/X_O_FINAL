@@ -1,7 +1,7 @@
 package controllers;
 import entity.UserEntity;
-import entity.validator.RegValidatorDb;
-import entity.validator.UserEntityValidator;
+import validators.profile.RegValidatorDb;
+import validators.profile.UserEntityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

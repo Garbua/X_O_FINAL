@@ -1,7 +1,7 @@
 package controllers;
 import dto.UserDTO;
-import dto.validator.LoginValid;
-import dto.validator.LoginValidDb;
+import validators.user.LoginValid;
+import validators.user.LoginValidDb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

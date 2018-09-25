@@ -1,4 +1,4 @@
-package dto.validator;
+package validators.user;
 
 import dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;

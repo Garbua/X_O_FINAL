@@ -1,8 +1,7 @@
-package entity.validator;
+package validators.profile;
 
 import entity.UserEntity;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.commons.validator.util.ValidatorUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

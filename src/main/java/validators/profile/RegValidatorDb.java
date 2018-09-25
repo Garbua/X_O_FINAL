@@ -1,4 +1,4 @@
-package entity.validator;
+package validators.profile;
 
 import dto.UserDTO;
 import entity.UserEntity;

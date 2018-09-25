@@ -7,7 +7,7 @@
         <mvc:annotation-driven>
         </mvc:annotation-driven>
 
-        <context:component-scan base-package="controllers, dao, entity, service, dto">
+        <context:component-scan base-package="controllers, dao, entity, service, dto, validators">
         </context:component-scan>
 
         <bean id="viewResolver"
