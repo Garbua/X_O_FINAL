@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -28,6 +29,32 @@ public class UserEntity implements Serializable {
 	@Column(name = "lastName")
 	private String lastName;
 
+
+	//Устанавливаем связь с таблицей games
+
+	@OneToMany(targetEntity = GamesEntity.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<GamesEntity> winners;
+
+	public List<GamesEntity> getWinners() {
+		return winners;
+	}
+
+	public void setWinners(List<GamesEntity> winners) {
+		this.winners = winners;
+	}
+
+	//Устанавливаем связь с таблицей move
+
+	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<MoveEntity> userMoves;
+
+	public List<MoveEntity> getUserMoves() {
+		return userMoves;
+	}
+
+	public void setUserMoves(List<MoveEntity> userMoves) {
+		this.userMoves = userMoves;
+	}
 
 	public UserEntity() {
 	}

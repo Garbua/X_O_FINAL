@@ -31,7 +31,15 @@
 </div>
 
 <center>
-    <h1>Добро пожаловать в игру КРЕСТИКИ НОЛИКИ</h1>
+    <h1><spring:message code="label.welcomelogin" arguments="${sessionScope.userDTO.login}"></spring:message> </h1>
+    <br>
+    <br>
+    <spring:message code="label.gameAititle" var="gameAiLabel"></spring:message>
+    <div style="...">
+        <form action="" method="get">
+            <input type="submit" value="${gameAiLabel}"/>
+        </form>
+    </div>
 </center>
 
 </body>
