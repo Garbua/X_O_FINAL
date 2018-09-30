@@ -1,4 +1,4 @@
-package dao.user.impl;
+package dao.impl;
 
 import dao.UserDAO;
 import entity.UserEntity;

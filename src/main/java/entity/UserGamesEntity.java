@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "user_games")
+
 public class UserGamesEntity implements Serializable {
 
 	@Column
