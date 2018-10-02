@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,14 +33,14 @@ public class UserEntity implements Serializable {
 
 	//Устанавливаем связь с таблицей games
 
-	@OneToMany(targetEntity = GamesEntity.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<GamesEntity> winners;
+	@OneToMany(targetEntity = Game.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Game> winners;
 
-	public List<GamesEntity> getWinners() {
+	public List<Game> getWinners() {
 		return winners;
 	}
 
-	public void setWinners(List<GamesEntity> winners) {
+	public void setWinners(List<Game> winners) {
 		this.winners = winners;
 	}
 
@@ -54,6 +55,18 @@ public class UserEntity implements Serializable {
 
 	public void setUserMoves(List<MoveEntity> userMoves) {
 		this.userMoves = userMoves;
+	}
+
+	//Устанавливаем связь с таблицей user_games
+	@OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<User_Games> user_games= new ArrayList<User_Games>();
+
+	public List<User_Games> getUser_games() {
+		return this.user_games;
+	}
+
+	public void setUser_games(List<User_Games> user_games) {
+		this.user_games = user_games;
 	}
 
 	public UserEntity() {
