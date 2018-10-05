@@ -2,6 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="prf" uri="/WEB-INF/taglib/MyTagProfile" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Game X_O </title>
@@ -34,7 +36,7 @@
 
 <h1 align="center"><strong><spring:message code="label.gameAititle"/></strong> </h1>
 
-<form action="/controller/player" method="get" name="player">
+<form action="/displaygame" method="post">
     <table align="center", border="2", cellspacing="2", cellpadding="10", width="50">
         <tr>
             <td><input type="text" name="0" value="${p0}"></td>
@@ -71,7 +73,14 @@
     <br>
     <input type="submit" align="center" value="<spring:message code="label.submit"/>" >
 </form>
-    <a href="/index.jsp"><spring:message code="label.restart"/></a>
+    <a href="/displaygame"><spring:message code="label.restart"/></a>
+    <br>
+    <div align="center" style="margin-top: 30px">
+        <form action="/gamelogin" method="get">
+            <spring:message code="label.home" var="homeLabel"></spring:message>
+            <input type="submit" value="${homeLabel}"/>
+        </form>
+    </div>
 </center>
 </body>
 </html>
