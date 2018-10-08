@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_games", catalog = "xo_final")
 @AssociationOverrides({
-		@AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
+		@AssociationOverride(name = "pk.login", joinColumns = @JoinColumn(name = "user_id")),
 		@AssociationOverride(name = "pk.game", joinColumns = @JoinColumn(name = "game_id"))
 })
 public class User_Games implements Serializable {

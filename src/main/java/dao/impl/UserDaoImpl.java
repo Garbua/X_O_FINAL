@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.UserDAO;
+import dto.UserDTO;
 import entity.UserEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -70,9 +71,8 @@ public class UserDaoImpl implements UserDAO {
 	 * @param user - удаляемый объект пользователя
 	 */
 	@Override
-	public void deleteUser(UserEntity user) {
-		UserEntity mergedUser = (UserEntity) sessionFactory.getCurrentSession().merge(user);
-		sessionFactory.getCurrentSession().delete(mergedUser);
+	public void deleteUser(UserDTO user) {
+		sessionFactory.getCurrentSession().delete(getUserByLogin(user.getLogin()));
 		LOGGER.info(messageSource.getMessage("dao.user.delete", new Object[]{user}, Locale.ENGLISH));
 
 	}

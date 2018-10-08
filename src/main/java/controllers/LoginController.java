@@ -1,7 +1,7 @@
 package controllers;
 import dto.UserDTO;
-import validators.user.LoginValid;
-import validators.user.LoginValidDb;
+import service.UserService;
+import validators.login.LoginValid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +14,13 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value ="/login")
-public class LoginController {
+public class LoginController extends ExceptionHandlerController{
 
 	@Autowired
 	private LoginValid loginValid;
 
 	@Autowired
-	private LoginValidDb loginValidDb;
+	private UserService userService;
 
 	/**
 	 * Метод GET страницы авторизации
@@ -50,12 +50,28 @@ public class LoginController {
 		if (result.hasErrors()) {
 			return "pages/index";
 
+		} else if (userService.loginExists(userDTO.getLogin())) {
+
+			if (userService.passwordCorrect(userDTO.getPassword(), userDTO.getLogin())) {
+
+				if (session.getAttribute("userDTO") == null) {
+					session.setAttribute("userDTO", userDTO);
+					return "/pages/gameLogin";
+				}
+				model.addAttribute("form_error", "0");
+				return "pages/gameLogin";
+			} else {
+				model.addAttribute("form_error", "1");
+				return "pages/index";
+			}
 		} else {
-			return loginValidDb.validLoginDb(model, session, userDTO);
+			model.addAttribute("form_error", String.format("2",
+					userDTO.getLogin()));
+			return "pages/index";
+		}
 
 		}
 
-	}
 
 	/**
 	 * Метод выхода из профиля

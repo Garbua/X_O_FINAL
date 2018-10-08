@@ -1,4 +1,4 @@
-package validators.user;
+package validators.login;
 
 import dto.UserDTO;
 import org.springframework.stereotype.Component;

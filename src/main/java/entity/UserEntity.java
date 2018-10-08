@@ -58,7 +58,7 @@ public class UserEntity implements Serializable {
 	}
 
 	//Устанавливаем связь с таблицей user_games
-	@OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pk.login", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<User_Games> user_games= new ArrayList<User_Games>();
 
 	public List<User_Games> getUser_games() {

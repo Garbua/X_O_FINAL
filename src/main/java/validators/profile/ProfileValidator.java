@@ -8,7 +8,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class UserEntityValidator implements Validator {
+public class ProfileValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> aClass) {
 		return UserEntity.class.isAssignableFrom(aClass);

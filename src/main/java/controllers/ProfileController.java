@@ -47,8 +47,7 @@ public class ProfileController extends ExceptionHandlerController {
 	@RequestMapping(value = "/deleteuser",method = RequestMethod.GET)
 	public String deleteUser(Model model, HttpSession session){
 		UserDTO user = (UserDTO) session.getAttribute("userDTO");
-		UserEntity userDelete = userService.getUserByLogin(user.getLogin());
-		userService.deleteUser(userDelete);
+		userService.deleteUser(user);
 		session.invalidate();
 		model.addAttribute("userDTO", new UserDTO());
 		return "pages/index";

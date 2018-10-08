@@ -1,7 +1,8 @@
 package controllers;
+import dto.UserDTO;
 import entity.UserEntity;
-import validators.profile.RegValidatorDb;
-import validators.profile.UserEntityValidator;
+import service.UserService;
+import validators.profile.ProfileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +17,10 @@ import javax.validation.Valid;
 public class RegController extends ExceptionHandlerController {
 
 	@Autowired
-	private UserEntityValidator regValidator;
+	private ProfileValidator regValidator;
 
 	@Autowired
-	private RegValidatorDb regValidatorDb;
+	private UserService userService;
 
 	/**
 	 * Метод POST регистрации нового пользователя
@@ -35,10 +36,25 @@ public class RegController extends ExceptionHandlerController {
 
 		regValidator.validate(userEntity, result);
 
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return "pages/registrationPage";
-		}else {
-			return regValidatorDb.regValidDb(model,userEntity);
+		} else if (userService.loginExists(userEntity.getLogin())) {
+			model.addAttribute("reg_very", "0");
+			return "pages/registrationPage";
+		} else {
+			if (userService.emailExists(userEntity.getEmail())) {
+				model.addAttribute("reg_very", "1");
+				return "pages/registrationPage";
+			} else {
+				try {
+					model.addAttribute("reg_very", "success");
+					model.addAttribute("userDTO", new UserDTO());
+					userService.createUser(userEntity);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return "pages/index";
+			}
 		}
 	}
 
