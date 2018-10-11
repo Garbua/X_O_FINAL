@@ -42,9 +42,10 @@ public class GameDaoImpl implements GameDAO {
 	}
 
 	@Override
-	public void createGame(Game game) {
+	public Game createGame(Game game) {
 		sessionFactory.getCurrentSession().save(game);
 //		LOGGER.info(messageSource.getMessage();
+		return game;
 	}
 
 	@Override

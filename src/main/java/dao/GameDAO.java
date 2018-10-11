@@ -7,7 +7,7 @@ public interface GameDAO {
 
 	Game getGameByStatus(String statusGame);
 	Game getGameByID (Long id);
-	void createGame (Game game);
+	Game createGame (Game game);
 	void update (Game game);
 	void delete (Game game);
 }

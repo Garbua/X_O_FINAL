@@ -1,6 +1,9 @@
 package dao.impl;
 
 import dao.UserGamesDAO;
+import entity.Game;
+import entity.Signs;
+import entity.UserEntity;
 import entity.User_Games;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -30,6 +33,14 @@ public class UserGamesDaoImpl implements UserGamesDAO {
 		query.setParameter("pk", user_games.getPk());
 		//		LOGGER.info(messageSource.getMessage();
 		return (User_Games) query.uniqueResult();
+	}
+
+	public UserEntity getBySign(Game game, String sign){
+		String userHQL = "FROM User_Games WHERE game_id = :id AND sign = :sign";
+		Query query = sessionFactory.getCurrentSession().createQuery(userHQL);
+		query.setParameter("id", game.getId_game());
+		query.setParameter("sign", sign);
+		return (UserEntity) query.uniqueResult();
 	}
 
 	@Override
