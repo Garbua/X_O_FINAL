@@ -1,7 +1,7 @@
 package dao;
 
 import entity.Game;
-import entity.StatusGame;
+import entity.String;
 
 public interface GameDAO {
 
@@ -10,4 +10,5 @@ public interface GameDAO {
 	Game createGame (Game game);
 	void update (Game game);
 	void delete (Game game);
+
 }

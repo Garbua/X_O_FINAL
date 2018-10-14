@@ -1,5 +1,5 @@
 package entity;
 
-public enum StatusGame {
+public enum String {
 	New, Started, Complete;
 }

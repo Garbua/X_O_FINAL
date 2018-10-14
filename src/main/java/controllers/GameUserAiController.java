@@ -1,9 +1,8 @@
 package controllers;
 
-
 import dao.GameDAO;
 import dao.MoveDAO;
-import dao.UserGamesDAO;
+import dao.PlayerDAO;
 import entity.Game;
 import entity.MoveEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,12 @@ public class GameUserAiController extends ExceptionHandlerController {
 	@Autowired
 	private GameDAO gameDAO;
 
-	@Autowired
-	private UserGamesDAO userGamesDAO;
 
 	@Autowired
 	private MoveDAO moveDAO;
+
+	@Autowired
+	private PlayerDAO playerDAO;
 
 	private Game gameAi;
 	private Integer pole = 3;
@@ -51,7 +51,6 @@ public class GameUserAiController extends ExceptionHandlerController {
 			moveEntity.setGame_id(gameAi);
 			moveEntity.setPole(param);
 			moveEntity.setMove(request.getParameter(param));
-			moveEntity.setUser_id(userGamesDAO.getBySign(gameAi,request.getParameter(param)));
 			moveDAO.createMove(moveEntity);
 			request.setAttribute("p" + i, request.getParameter(param));
 

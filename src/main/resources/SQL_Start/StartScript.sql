@@ -46,10 +46,11 @@ CREATE TABLE `move` (
 
 
 CREATE TABLE `user_games` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `game_id` int(11) NOT NULL,
   `sign` varchar(45) NOT NULL,
-  PRIMARY KEY (`user_id`,`game_id`),
+  PRIMARY KEY (`id`),
   KEY `user_user_idx` (`user_id`),
   KEY `game_games_idx` (`game_id`),
   CONSTRAINT `game_games` FOREIGN KEY (`game_id`) REFERENCES `games` (`id_game`) ON DELETE CASCADE ON UPDATE CASCADE,

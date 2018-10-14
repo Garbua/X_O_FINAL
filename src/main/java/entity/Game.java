@@ -16,15 +16,22 @@ public class Game implements Serializable {
 	private Long id_game;
 
 	@ManyToOne(targetEntity = UserEntity.class, cascade = CascadeType.REFRESH , fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "winner")
 	private UserEntity winner;
 
 	@Column(name = "status")
 	private String status;
 
 	//Устанавливаем связь с таблицей user_games
-	@OneToMany(mappedBy = "pk.game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<User_Games> user_games= new ArrayList<User_Games>();
+//	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	@JoinTable(name = "user_games",
+//			joinColumns = @JoinColumn(name = "game_id"),
+//			inverseJoinColumns = @JoinColumn(name = "user_id"))
+//	private List<Player> users= new ArrayList<Player>();
+
+	//Устанавливаем связь с таблицей user_games
+	@OneToMany(mappedBy = "game",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Player> users = new ArrayList<>();
 
 	//Устанавливаем связь с таблицей move
 	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "game_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -42,19 +49,6 @@ public class Game implements Serializable {
 	public Game(UserEntity winner, String status) {
 		this.winner = winner;
 		this.status = status;
-	}
-
-	public Game(UserEntity winner, String status, List<User_Games> user_games) {
-		this.winner = winner;
-		this.status = status;
-		this.user_games = user_games;
-	}
-
-	public Game(UserEntity winner, String status, List<User_Games> user_games, List<MoveEntity> moves) {
-		this.winner = winner;
-		this.status = status;
-		this.user_games = user_games;
-		this.moves = moves;
 	}
 
 	public Long getId_game() {
@@ -81,12 +75,12 @@ public class Game implements Serializable {
 		this.status = status;
 	}
 
-	public List<User_Games> getUser_games() {
-		return user_games;
+	public List<Player> getUsers() {
+		return users;
 	}
 
-	public void setUser_games(List<User_Games> user_games) {
-		this.user_games = user_games;
+	public void setUsers(List<Player> users) {
+		this.users = users;
 	}
 
 	public List<MoveEntity> getMoves() {
@@ -96,6 +90,4 @@ public class Game implements Serializable {
 	public void setMoves(List<MoveEntity> moves) {
 		this.moves = moves;
 	}
-
-
 }

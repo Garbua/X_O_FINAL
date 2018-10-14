@@ -30,47 +30,18 @@ public class UserEntity implements Serializable {
 	@Column(name = "lastName")
 	private String lastName;
 
-
-	//Устанавливаем связь с таблицей games
-
-	@OneToMany(targetEntity = Game.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Game> winners;
-
-	public List<Game> getWinners() {
-		return winners;
-	}
-
-	public void setWinners(List<Game> winners) {
-		this.winners = winners;
-	}
-
 	//Устанавливаем связь с таблицей move
-
 	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MoveEntity> userMoves;
 
-	public List<MoveEntity> getUserMoves() {
-		return userMoves;
-	}
+	//Устанавливаем связь с таблицей games
+	@OneToMany(targetEntity = Game.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Game> winners;
 
-	public void setUserMoves(List<MoveEntity> userMoves) {
-		this.userMoves = userMoves;
-	}
 
 	//Устанавливаем связь с таблицей user_games
-	@OneToMany(mappedBy = "pk.login", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<User_Games> user_games= new ArrayList<User_Games>();
-
-	public List<User_Games> getUser_games() {
-		return this.user_games;
-	}
-
-	public void setUser_games(List<User_Games> user_games) {
-		this.user_games = user_games;
-	}
-
-	public UserEntity() {
-	}
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Player> players = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -118,6 +89,30 @@ public class UserEntity implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public List<MoveEntity> getUserMoves() {
+		return userMoves;
+	}
+
+	public void setUserMoves(List<MoveEntity> userMoves) {
+		this.userMoves = userMoves;
+	}
+
+	public List<Game> getWinners() {
+		return winners;
+	}
+
+	public void setWinners(List<Game> winners) {
+		this.winners = winners;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
 	}
 
 	@Override

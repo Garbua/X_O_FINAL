@@ -2,6 +2,7 @@ package service.impl;
 
 import dao.GameDAO;
 import entity.Game;
+import entity.String;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,4 +42,6 @@ public class GameServiceImpl implements GameService {
 	public void delete(Game game) {
 		gameDAO.delete(game);
 	}
+
+
 }

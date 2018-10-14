@@ -13,7 +13,7 @@ public class MoveEntity implements Serializable {
 	private Long id_move;
 
 	@ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "id_game")
+	@JoinColumn(name = "game_id")
 	private Game game_id;
 
 	@Column(name = "pole")
@@ -23,7 +23,7 @@ public class MoveEntity implements Serializable {
 	private String move;
 
 	@ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "user_id")
 	private UserEntity user_id;
 
 	public MoveEntity() {

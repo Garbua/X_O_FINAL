@@ -1,6 +1,7 @@
 package service;
 
 import entity.Game;
+import entity.String;
 
 public interface GameService {
 
@@ -9,4 +10,5 @@ public interface GameService {
 	void createGame (Game game);
 	void update (Game game);
 	void delete (Game game);
+
 }

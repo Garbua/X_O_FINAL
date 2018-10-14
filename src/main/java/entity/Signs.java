@@ -1,5 +1,5 @@
 package entity;
 
-public enum Signs {
+public enum String {
 	X, O;
 }
