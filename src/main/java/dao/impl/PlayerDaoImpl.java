@@ -24,7 +24,7 @@ public class PlayerDaoImpl implements PlayerDAO {
 
 	@Override
 	public Player getPlayerByID(Long id) {
-		java.lang.String playerHQL = "FROM Player WHERE id = :id";
+		String playerHQL = "FROM Player WHERE id = :id";
 		Query query = sessionFactory.getCurrentSession().createQuery(playerHQL);
 		query.setParameter("id", id);
 		return (Player) query.uniqueResult();

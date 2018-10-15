@@ -1,7 +1,7 @@
 package service;
 
 import entity.Game;
-import entity.String;
+
 
 public interface GameService {
 

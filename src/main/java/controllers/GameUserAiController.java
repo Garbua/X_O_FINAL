@@ -1,10 +1,12 @@
 package controllers;
 
+
 import dao.GameDAO;
 import dao.MoveDAO;
 import dao.PlayerDAO;
-import entity.Game;
-import entity.MoveEntity;
+import dao.UserDAO;
+import dto.UserDTO;
+import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,18 +29,32 @@ public class GameUserAiController extends ExceptionHandlerController {
 	@Autowired
 	private PlayerDAO playerDAO;
 
+	@Autowired
+	private UserDAO userDAO;
+
+	private UserDTO userDto;
+	private UserEntity user;
 	private Game gameAi;
 	private Integer pole = 3;
 
 	@RequestMapping(value = "/aistartgame", method = RequestMethod.GET)
 	public String startGameAi(){
-		gameAi = gameDAO.createGame(new Game("started"));
+		gameAi = new Game(StatusGame.Started.getName());
+		gameDAO.createGame(gameAi);
 		return "pages/aiGame";
 	}
 
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
 	public String gameUserAiGet(Model model){
+		Player player = new Player();
+		player.setGame(gameAi);
+
+		user = userDAO.getUserByLogin(userDto.getLogin());
+
+		player.setUser(user);
+		player.setSign(Signs.X.getName());
+		playerDAO.createSign(player);
 
 		return "pages/aiGame";
 	}
@@ -51,6 +67,7 @@ public class GameUserAiController extends ExceptionHandlerController {
 			moveEntity.setGame_id(gameAi);
 			moveEntity.setPole(param);
 			moveEntity.setMove(request.getParameter(param));
+			moveEntity.setUser_id(user);
 			moveDAO.createMove(moveEntity);
 			request.setAttribute("p" + i, request.getParameter(param));
 

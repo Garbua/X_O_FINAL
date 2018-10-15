@@ -1,11 +1,11 @@
 package entity;
 
-public enum Signs {
-	X("X"), O("O");
+public enum StatusGame {
+	New("New"), Started("Started"), Complete("Complete");
 
 	private String name;
 
-	Signs(String name) {
+	StatusGame(String name) {
 		this.name = name;
 	}
 

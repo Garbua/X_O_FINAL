@@ -1,7 +1,7 @@
 package dao;
 
 import entity.Game;
-import entity.String;
+
 
 public interface GameDAO {
 

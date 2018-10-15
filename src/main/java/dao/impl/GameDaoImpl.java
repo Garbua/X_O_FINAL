@@ -2,7 +2,6 @@ package dao.impl;
 
 import dao.GameDAO;
 import entity.Game;
-import entity.String;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -26,7 +25,7 @@ public class GameDaoImpl implements GameDAO {
 
 	@Override
 	public Game getGameByStatus(String statusGame) {
-		java.lang.String gameHQL = "FROM Game WHERE status = :status";
+		String gameHQL = "FROM Game WHERE status = :status";
 		Query query = sessionFactory.getCurrentSession().createQuery(gameHQL);
 		query.setParameter("status", statusGame);
 //		LOGGER.info(messageSource.getMessage("dao.game.getGameById", new Object[]{id}, Locale.ENGLISH));
@@ -35,7 +34,7 @@ public class GameDaoImpl implements GameDAO {
 
 	@Override
 	public Game getGameByID(Long id) {
-		java.lang.String gameHQL = "FROM Game WHERE id_game = :id";
+		String gameHQL = "FROM Game WHERE id_game = :id";
 		Query query = sessionFactory.getCurrentSession().createQuery(gameHQL);
 		query.setParameter("id", id);
 //		LOGGER.info(messageSource.getMessage("dao.game.getGameById", new Object[]{id}, Locale.ENGLISH));

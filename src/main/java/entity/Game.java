@@ -44,8 +44,6 @@ public class Game implements Serializable {
 		this.status = status;
 	}
 
-
-
 	public Game(UserEntity winner, String status) {
 		this.winner = winner;
 		this.status = status;
