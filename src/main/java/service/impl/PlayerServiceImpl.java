@@ -12,8 +12,8 @@ public class PlayerServiceImpl implements PlayerService {
 	private PlayerDAO playerDAO;
 
 	@Override
-	public void createSign(Player sign) {
-		playerDAO.createSign(sign);
+	public void createSign(Player player) {
+		playerDAO.createPlayer(player);
 	}
 
 	@Override

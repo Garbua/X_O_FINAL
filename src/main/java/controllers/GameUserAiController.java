@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -32,7 +33,6 @@ public class GameUserAiController extends ExceptionHandlerController {
 	@Autowired
 	private UserDAO userDAO;
 
-	private UserDTO userDto;
 	private UserEntity user;
 	private Game gameAi;
 	private Integer pole = 3;
@@ -41,6 +41,7 @@ public class GameUserAiController extends ExceptionHandlerController {
 	public String startGameAi(){
 		gameAi = new Game(StatusGame.Started.getName());
 		gameDAO.createGame(gameAi);
+
 		return "pages/aiGame";
 	}
 
@@ -48,13 +49,14 @@ public class GameUserAiController extends ExceptionHandlerController {
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
 	public String gameUserAiGet(Model model){
 		Player player = new Player();
+		playerDAO.createPlayer(player);
 		player.setGame(gameAi);
 
-		user = userDAO.getUserByLogin(userDto.getLogin());
+		user = userDAO.getUserByLogin(user.getLogin());
 
 		player.setUser(user);
 		player.setSign(Signs.X.getName());
-		playerDAO.createSign(player);
+		playerDAO.createPlayer(player);
 
 		return "pages/aiGame";
 	}

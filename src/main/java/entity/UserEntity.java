@@ -32,16 +32,24 @@ public class UserEntity implements Serializable {
 
 	//Устанавливаем связь с таблицей move
 	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<MoveEntity> userMoves;
+	private List<MoveEntity> userMoves = new ArrayList<>();
 
 	//Устанавливаем связь с таблицей games
 	@OneToMany(targetEntity = Game.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Game> winners;
+	private List<Game> winners = new ArrayList<>();
 
 
 	//Устанавливаем связь с таблицей user_games
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Player> players = new ArrayList<>();
+
+	public UserEntity() {
+	}
+
+	public void addPlayer(Player player) {
+		player.setUser(this);
+		players.add(player);
+	}
 
 	public Long getId() {
 		return id;

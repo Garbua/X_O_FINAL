@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
@@ -55,21 +55,21 @@
        </span>
     </h3>
 
-<sf:form method="POST" action="/login" modelAttribute="userDTO">
+        <form:form method="POST" action="/login" modelAttribute="userDTO">
     <table align="center">
 
         <tr>
             <spring:message code="label.login" var="login"></spring:message>
             <th><label for = "login_name">${login}</label></th>
-            <td><sf:input id = "login_name" type="text" path="login"/></td>
-            <td><span class="error"> <sf:errors path="login"/></span></td>
+            <td><form:input id = "login_name" type="text" path="login"/></td>
+            <td><span class="error"> <form:errors path="login"/></span></td>
         </tr>
 
         <tr>
             <spring:message code="label.password" var="pass"></spring:message>
             <th><label for = "pass_login">${pass}</label></th>
-            <td><sf:input id="pass_login" type="password" path="password"/></td>
-            <td><span class="error"> <sf:errors path="password"/></span></td>
+            <td><form:input id="pass_login" type="password" path="password"/></td>
+            <td><span class="error"> <form:errors path="password"/></span></td>
         </tr>
 
     </table>
@@ -82,7 +82,7 @@
     </div>
 
 
-</sf:form>
+</form:form>
 
     <p></p>
 

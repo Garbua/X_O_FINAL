@@ -17,9 +17,9 @@ public class PlayerDaoImpl implements PlayerDAO {
 
 
 	@Override
-	public Player createSign(Player sign) {
-		sessionFactory.getCurrentSession().save(sign);
-		return  sign;
+	public Player createPlayer(Player player) {
+		sessionFactory.getCurrentSession().save(player);
+		return  player;
 	}
 
 	@Override

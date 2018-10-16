@@ -4,6 +4,6 @@ import entity.Player;
 
 public interface PlayerDAO {
 
-	Player createSign (Player sign);
+	Player createPlayer(Player player);
 	Player getPlayerByID (Long id);
 }

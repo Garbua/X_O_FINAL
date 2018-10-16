@@ -1,7 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
@@ -47,41 +47,41 @@
     </h3>
     <br>
 
-    <sf:form method="POST" action="/registration" modelAttribute="user_info">
+    <form:form method="POST" action="/registration" modelAttribute="user_info">
         <table align="center">
 
             <tr>
                 <spring:message code="label.login" var="login"></spring:message>
                 <th><label for = "login_name">${login}</label></th>
-                <td><sf:input id = "login_name" size="30" type="text" path="login"/></td>
+                <td><form:input id = "login_name" size="30" type="text" path="login"/></td>
                 <td><span class="error"> <sf:errors path="login"/></span></td>
             </tr>
 
             <tr>
                 <spring:message code="label.password" var="pass"></spring:message>
                 <th><label for = "pass_login">${pass}</label></th>
-                <td><sf:input id="pass_login" size="30" type="password" path="password"/></td>
+                <td><form:input id="pass_login" size="30" type="password" path="password"/></td>
                 <td><span class="error"> <sf:errors path="password"/></span></td>
             </tr>
 
             <tr>
                 <spring:message code="label.email" var="email"></spring:message>
                 <th><label for = "email_login">${email}</label></th>
-                <td><sf:input id="email_login" size="30" type="text" path="email"/></td>
+                <td><form:input id="email_login" size="30" type="text" path="email"/></td>
                 <td><span class="error"> <sf:errors path="email"/></span></td>
             </tr>
 
             <tr>
                 <spring:message code="label.firstName" var="first"></spring:message>
                 <th><label for = "first_login">${first}</label></th>
-                <td><sf:input id="first_login" size="30" type="text" path="firstName"/></td>
+                <td><form:input id="first_login" size="30" type="text" path="firstName"/></td>
                 <td><span class="error"> <sf:errors path="firstName"/></span></td>
             </tr>
 
             <tr>
                 <spring:message code="label.lastName" var="last"></spring:message>
                 <th><label for = "last_login">${last}</label></th>
-                <td><sf:input id="last_login" size="30" type="text" path="lastName"/></td>
+                <td><form:input id="last_login" size="30" type="text" path="lastName"/></td>
                 <td><span class="error"><sf:errors path="lastName"/></span> </td>
             </tr>
 
@@ -94,7 +94,7 @@
             <input type="submit" value="${reg2}"/>
         </div>
 
-    </sf:form>
+    </form:form>
 
     <p></p>
 
