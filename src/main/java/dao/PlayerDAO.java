@@ -6,4 +6,5 @@ public interface PlayerDAO {
 
 	Player createPlayer(Player player);
 	Player getPlayerByID (Long id);
+	Player updatePlayer(Player player);
 }

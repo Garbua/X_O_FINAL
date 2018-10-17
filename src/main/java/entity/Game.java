@@ -31,13 +31,23 @@ public class Game implements Serializable {
 
 	//Устанавливаем связь с таблицей user_games
 	@OneToMany(mappedBy = "game",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Player> users = new ArrayList<>();
+	private List<Player> players = new ArrayList<>();
 
 	//Устанавливаем связь с таблицей move
-	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "game_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MoveEntity> moves;
 
 	public Game() {
+	}
+
+	public void addPlayer(Player player) {
+		player.setGame(this);
+		players.add(player);
+	}
+
+	public void addMove(MoveEntity moveEntity) {
+		moveEntity.setGame(this);
+		moves.add(moveEntity);
 	}
 
 	public Game(String status) {
@@ -73,12 +83,12 @@ public class Game implements Serializable {
 		this.status = status;
 	}
 
-	public List<Player> getUsers() {
-		return users;
+	public List<Player> getPlayers() {
+		return players;
 	}
 
-	public void setUsers(List<Player> users) {
-		this.users = users;
+	public void setPlayers(List<Player> players) {
+		this.players = players;
 	}
 
 	public List<MoveEntity> getMoves() {

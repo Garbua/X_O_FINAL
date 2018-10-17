@@ -5,6 +5,7 @@ import entity.Player;
 
 public interface PlayerService {
 
-	void createSign (Player player);
+	void createPlayer (Player player);
 	void getPlayerByID (Long id);
+	void updatePlayer(Player player);
 }

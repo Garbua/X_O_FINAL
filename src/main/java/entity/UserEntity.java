@@ -31,12 +31,12 @@ public class UserEntity implements Serializable {
 	private String lastName;
 
 	//Устанавливаем связь с таблицей move
-	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = MoveEntity.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MoveEntity> userMoves = new ArrayList<>();
 
 	//Устанавливаем связь с таблицей games
 	@OneToMany(targetEntity = Game.class, mappedBy = "winner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Game> winners = new ArrayList<>();
+	private List<Game> games = new ArrayList<>();
 
 
 	//Устанавливаем связь с таблицей user_games
@@ -49,6 +49,16 @@ public class UserEntity implements Serializable {
 	public void addPlayer(Player player) {
 		player.setUser(this);
 		players.add(player);
+	}
+
+	public void addGame(Game game) {
+		game.setWinner(this);
+		games.add(game);
+	}
+
+	public void addMove(MoveEntity moveEntity) {
+		moveEntity.setUser(this);
+		userMoves.add(moveEntity);
 	}
 
 	public Long getId() {
@@ -107,12 +117,12 @@ public class UserEntity implements Serializable {
 		this.userMoves = userMoves;
 	}
 
-	public List<Game> getWinners() {
-		return winners;
+	public List<Game> getGames() {
+		return games;
 	}
 
-	public void setWinners(List<Game> winners) {
-		this.winners = winners;
+	public void setGames(List<Game> games) {
+		this.games = games;
 	}
 
 	public List<Player> getPlayers() {

@@ -14,7 +14,7 @@ public class MoveEntity implements Serializable {
 
 	@ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "game_id")
-	private Game game_id;
+	private Game game;
 
 	@Column(name = "pole")
 	private String pole;
@@ -24,16 +24,16 @@ public class MoveEntity implements Serializable {
 
 	@ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "user_id")
-	private UserEntity user_id;
+	private UserEntity user;
 
 	public MoveEntity() {
 	}
 
-	public MoveEntity(Game game_id, String pole, String move, UserEntity user_id) {
-		this.game_id = game_id;
+	public MoveEntity(Game game, String pole, String move, UserEntity user) {
+		this.game = game;
 		this.pole = pole;
 		this.move = move;
-		this.user_id = user_id;
+		this.user = user;
 	}
 
 	public Long getId_move() {
@@ -44,12 +44,12 @@ public class MoveEntity implements Serializable {
 		this.id_move = id_move;
 	}
 
-	public Game getGame_id() {
-		return game_id;
+	public Game getGame() {
+		return game;
 	}
 
-	public void setGame_id(Game game_id) {
-		this.game_id = game_id;
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 	public String getPole() {
@@ -68,11 +68,11 @@ public class MoveEntity implements Serializable {
 		this.move = move;
 	}
 
-	public UserEntity getUser_id() {
-		return user_id;
+	public UserEntity getUser() {
+		return user;
 	}
 
-	public void setUser_id(UserEntity user_id) {
-		this.user_id = user_id;
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 }

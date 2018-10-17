@@ -12,7 +12,7 @@ public class PlayerServiceImpl implements PlayerService {
 	private PlayerDAO playerDAO;
 
 	@Override
-	public void createSign(Player player) {
+	public void createPlayer(Player player) {
 		playerDAO.createPlayer(player);
 	}
 
@@ -20,5 +20,10 @@ public class PlayerServiceImpl implements PlayerService {
 	public void getPlayerByID(Long id) {
 		playerDAO.getPlayerByID(id);
 
+	}
+
+	@Override
+	public void updatePlayer(Player player) {
+		playerDAO.updatePlayer(player);
 	}
 }

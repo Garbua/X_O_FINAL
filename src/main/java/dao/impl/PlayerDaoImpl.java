@@ -30,4 +30,10 @@ public class PlayerDaoImpl implements PlayerDAO {
 		return (Player) query.uniqueResult();
 
 	}
+
+	@Override
+	public Player updatePlayer(Player player) {
+		sessionFactory.getCurrentSession().update(player);
+		return player;
+	}
 }
