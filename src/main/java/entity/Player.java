@@ -68,4 +68,14 @@ public class Player{
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", sign='" + sign + '\'' +
+                ", user=" + user +
+                ", game=" + game +
+                '}';
+    }
 }
