@@ -22,13 +22,6 @@ public class Player{
     @JoinColumn(name = "game_id")
     private Game game;
 
-//    //	//Устанавливаем связь с таблицей games
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinTable(name = "user_games",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "game_id"))
-//    private List<Game> games;
-
 
     public UserEntity getUser() {
         return user;

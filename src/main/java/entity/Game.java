@@ -23,13 +23,6 @@ public class Game implements Serializable {
 	private String status;
 
 	//Устанавливаем связь с таблицей user_games
-//	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	@JoinTable(name = "user_games",
-//			joinColumns = @JoinColumn(name = "game_id"),
-//			inverseJoinColumns = @JoinColumn(name = "user_id"))
-//	private List<Player> users= new ArrayList<Player>();
-
-	//Устанавливаем связь с таблицей user_games
 	@OneToMany(mappedBy = "game",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Player> players = new ArrayList<>();
 

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="prf" uri="/WEB-INF/taglib/MyTagProfile" %>
 <html>
 <head>
     <spring:message code="label.proflogin" var="profil" arguments="${sessionScope.userDTO.login}"></spring:message>
@@ -80,21 +81,21 @@
                     <spring:message code="label.email" var="email"></spring:message>
                     <th><label for = "email_login">${email}</label></th>
                     <td><form:input id="email_login" size="30" type="text" path="email"/></td>
-                    <td><span class="error"> <sf:errors path="email"/></span></td>
+                    <td><span class="error"> <form:errors path="email"/></span></td>
                 </tr>
 
                 <tr>
                     <spring:message code="label.firstName" var="first"></spring:message>
                     <th><label for = "first_login">${first}</label></th>
                     <td><form:input id="first_login" size="30" type="text" path="firstName"/></td>
-                    <td><span class="error"> <sf:errors path="firstName"/></span></td>
+                    <td><span class="error"> <form:errors path="firstName"/></span></td>
                 </tr>
 
                 <tr>
                     <spring:message code="label.lastName" var="last"></spring:message>
                     <th><label for = "last_login">${last}</label></th>
                     <td><form:input id="last_login" size="30" type="text" path="lastName"/></td>
-                    <td><span class="error"><sf:errors path="lastName"/></span> </td>
+                    <td><span class="error"><form:errors path="lastName"/></span> </td>
                 </tr>
 
             </table>

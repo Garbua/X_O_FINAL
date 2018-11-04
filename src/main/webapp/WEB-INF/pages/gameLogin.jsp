@@ -35,7 +35,7 @@
     <br>
     <spring:message code="label.gameAititle" var="gameAiLabel"></spring:message>
     <div style="...">
-        <form action="/aistartgame" method="get">
+        <form action="/aigame" method="get">
             <input type="submit" value="${gameAiLabel}"/>
         </form>
     </div>
