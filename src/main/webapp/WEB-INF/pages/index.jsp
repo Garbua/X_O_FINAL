@@ -49,7 +49,8 @@
     <br>
     <h3 align="center">
         <spring:message code="label.addnewuser" var="succes"></spring:message>
-       <span class="error"> <c:if test="${'success'.equals(reg_very)}">
+       <span class="error">
+           <c:if test="${'success'.equals(reg_very)}">
            <b>${succes} </b>
        </c:if>
        </span>
