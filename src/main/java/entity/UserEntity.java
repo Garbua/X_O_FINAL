@@ -40,7 +40,7 @@ public class UserEntity implements Serializable {
 
 
 	//Устанавливаем связь с таблицей user_games
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = Player.class, mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Player> players = new ArrayList<>();
 
 	public UserEntity() {

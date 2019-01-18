@@ -15,7 +15,7 @@ public class Game implements Serializable {
 	@Column(name = "id_game")
 	private Long id_game;
 
-	@ManyToOne(targetEntity = UserEntity.class, cascade = CascadeType.REFRESH , fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = UserEntity.class, cascade = CascadeType.ALL , fetch = FetchType.LAZY)
 	@JoinColumn(name = "winner")
 	private UserEntity winner;
 

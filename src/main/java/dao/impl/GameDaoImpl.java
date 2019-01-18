@@ -45,6 +45,7 @@ public class GameDaoImpl implements GameDAO {
 	public Game createGame(Game game) {
 		sessionFactory.getCurrentSession().save(game);
 //		LOGGER.info(messageSource.getMessage();
+
 		return game;
 	}
 
