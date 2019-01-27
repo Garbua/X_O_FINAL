@@ -10,5 +10,6 @@ public interface GameDAO {
 	Game createGame (Game game);
 	void update (Game game);
 	void delete (Game game);
+	void refresh (Game game);
 
 }

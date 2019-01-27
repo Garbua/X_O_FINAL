@@ -43,7 +43,7 @@ public class GameDaoImpl implements GameDAO {
 
 	@Override
 	public Game createGame(Game game) {
-		sessionFactory.getCurrentSession().save(game);
+		sessionFactory.getCurrentSession().saveOrUpdate(game);
 //		LOGGER.info(messageSource.getMessage();
 
 		return game;
@@ -61,5 +61,10 @@ public class GameDaoImpl implements GameDAO {
 	public void delete(Game game) {
 		sessionFactory.getCurrentSession().delete(game);
 //		LOGGER.info(messageSource.getMessage();
+	}
+
+	@Override
+	public void refresh(Game game) {
+		sessionFactory.getCurrentSession().refresh(game);
 	}
 }

@@ -18,7 +18,7 @@ public class PlayerDaoImpl implements PlayerDAO {
 
 	@Override
 	public Player createPlayer(Player player) {
-		sessionFactory.getCurrentSession().save(player);
+		sessionFactory.getCurrentSession().saveOrUpdate(player);
 		return  player;
 	}
 
@@ -35,5 +35,11 @@ public class PlayerDaoImpl implements PlayerDAO {
 	public Player updatePlayer(Player player) {
 		sessionFactory.getCurrentSession().update(player);
 		return player;
+	}
+
+	@Override
+	public void refreshPlayer(Player player) {
+		sessionFactory.getCurrentSession().refresh(player);
+		return ;
 	}
 }

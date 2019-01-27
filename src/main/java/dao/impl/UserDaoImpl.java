@@ -49,7 +49,7 @@ public class UserDaoImpl implements UserDAO {
 	 */
 	@Override
 	public UserEntity createUser(UserEntity user) {
-		sessionFactory.getCurrentSession().save(user);
+		sessionFactory.getCurrentSession().saveOrUpdate(user);
 		LOGGER.info(messageSource.getMessage("dao.user.save", new Object [] {user},Locale.ENGLISH));
 		return user;
 	}

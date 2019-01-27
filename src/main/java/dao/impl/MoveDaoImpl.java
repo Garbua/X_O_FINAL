@@ -12,6 +12,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +35,7 @@ public class MoveDaoImpl implements MoveDAO {
 		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
 		query.setParameter("game_id", game.getId_game());
 //		LOGGER.info(messageSource.getMessage("dao.move.getMoveByGame", new Object[]{game}, Locale.ENGLISH));
-		return (List<MoveEntity>) query.getSingleResult();
+		return (List<MoveEntity>) query.getResultList();
 	}
 
 	@Override
@@ -46,11 +47,22 @@ public class MoveDaoImpl implements MoveDAO {
 		return (List<MoveEntity>) query.getSingleResult();
 	}
 
+
 	@Override
 	public MoveEntity createMove(MoveEntity moveEntity) {
-		sessionFactory.getCurrentSession().save(moveEntity);
+		sessionFactory.getCurrentSession().saveOrUpdate(moveEntity);
 		//		LOGGER.info(messageSource.getMessage();
 		return moveEntity;
+	}
+
+	@Override
+	public long getCountPoleDb(Game game) {
+		String moveHQL = "SELECT count (pole) FROM MoveEntity WHERE game_id = :game_id";
+		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
+		query.setParameter("game_id", game.getId_game());
+		List listResult = query.list();
+		Number number = (Number) listResult.get(0);
+		return number.longValue();
 	}
 
 	@Override
@@ -66,4 +78,5 @@ public class MoveDaoImpl implements MoveDAO {
 		//		LOGGER.info(messageSource.getMessage();
 
 	}
+
 }

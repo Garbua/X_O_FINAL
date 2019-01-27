@@ -1,11 +1,13 @@
 package controllers;
 
-
+import dto.GamePoleDTO;
 import dto.UserDTO;
 import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import service.GameService;
@@ -14,7 +16,8 @@ import service.PlayerService;
 import service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
+import javax.validation.Valid;
+
 
 @Controller
 public class GameUserAiController extends ExceptionHandlerController {
@@ -37,35 +40,90 @@ public class GameUserAiController extends ExceptionHandlerController {
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
 	public String gameUserAiGet(Model model){
-		Game game = new Game();
-		String s = StatusGame.valueOf("Started").getName();
-		game.setStatus(s);
-		gameService.createGame(game);
+
+		GamePoleDTO gamePoleDTO = new GamePoleDTO();
+		model.addAttribute("gKey", gamePoleDTO);
+
+		if(gameService.getGameByStatus("Started") == null) {
+			String s = StatusGame.valueOf("Started").getName();
+			Game game = new Game();
+			game.setStatus(s);
+			gameService.createGame(game);
+		}
+
+
 		return "pages/aiGame";
 	}
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.POST)
-	public String gameUserAiPost(Model model, HttpServletRequest request, HttpSession session){
-		MoveEntity move = new MoveEntity();
-		Game game = gameService.getGameByStatus(StatusGame.valueOf("Started").getName());
-System.out.println(game.getId_game());
-			move.setGame(game);
-			move.setPole("0");
-			move.setMove("X");
-			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
-			System.out.println(userDTO.getLogin());
-			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
-			System.out.println(user.getFirstName());
-			move.setUser(user);
-			moveService.createMove(move);
+	public String gameUserAiPost(HttpServletRequest request, HttpSession session,@Valid@ModelAttribute("gKey")
+			GamePoleDTO gPole, BindingResult result, Model model){
 
-			Player player = new Player();
-			player.setUser(user);
-			player.setGame(game);
-			player.setSign(move.getMove());
-			playerService.createPlayer(player);
-//			request.setAttribute("p" + i, map.get(i));
+		if(!result.hasErrors()) {
+			Game game = gameService.getGameByStatus(StatusGame.valueOf("Started").getName());
+			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
+			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
+
+			MoveEntity move = new MoveEntity();
+			createMove(move,game,gPole,user);
+
+			if ( game.getWinner().getLogin() == null ) {
+//				createPlayer(user,game,move.getMove());
+				Player player = new Player();
+				player.setUser(user);
+				player.setGame(game);
+				player.setSign(move.getMove());
+				playerService.createPlayer(player);
+			}
+		}else {
+			System.out.println("ERROR!!! VALID");
+			System.out.println(result.toString());
+		}
 
 		return "pages/aiGame";
 	}
+
+
+	public void createMove(MoveEntity move, Game game,GamePoleDTO gPole, UserEntity user){
+		move.setGame(game);
+
+		if(moveService.getCountPoleDb(game) != 0){
+			System.out.println("pole != 0");
+			for (int i = 0; i < 9; i++) {
+				String mv = gPole.getgAll().get(i);
+				if ("X".equalsIgnoreCase(mv)) {
+					for (MoveEntity m : moveService.getMoveByGame(game)) {
+							if ((!m.getPole().equalsIgnoreCase(String.valueOf(i))) && "X".equalsIgnoreCase(mv)){
+								move.setPole(String.valueOf(i));
+								move.setMove("X");
+							}
+						}
+					}
+				}
+		}else {
+			System.out.println("pole == 0");
+			for (int i = 0; i < 9; i++){
+				String p = gPole.getgAll().get(i);
+				if("X".equalsIgnoreCase(p) && p != null){
+					move.setPole(String.valueOf(i));
+					move.setMove("X");
+					break;
+				}
+			}
+		}
+
+		move.setUser(user);
+		moveService.createMove(move);
+	}
+
+//	public Player createPlayer(UserEntity user,Game game,String sign){
+//		Player player = new Player();
+//		player.setUser(user);
+//		player.setGame(game);
+//		player.setSign(sign);
+//		playerService.createPlayer(player);
+//		return player;
+//	}
+
+
 }

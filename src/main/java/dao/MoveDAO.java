@@ -11,6 +11,8 @@ public interface MoveDAO {
 	List<MoveEntity> getMoveByGame (Game game);
 	List<MoveEntity> getMoveByUser (UserEntity user);
 	MoveEntity createMove (MoveEntity moveEntity);
+	long getCountPoleDb(Game game);
 	void updateMove (MoveEntity moveEntity);
 	void deleteMove (MoveEntity moveEntity);
+
 }

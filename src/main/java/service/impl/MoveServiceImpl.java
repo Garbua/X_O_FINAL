@@ -50,4 +50,11 @@ public class MoveServiceImpl implements MoveService {
 		moveDAO.deleteMove(moveEntity);
 
 	}
+
+	@Override
+	public long getCountPoleDb(Game game) {
+		return moveDAO.getCountPoleDb(game);
+	}
+
+
 }

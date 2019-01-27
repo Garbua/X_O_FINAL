@@ -36,26 +36,26 @@
 
 <h1 align="center"><strong><spring:message code="label.gameAititle"/></strong> </h1>
 
-<form action="/aigame" method="post">
+    <form:form method="post" action="/aigame" modelAttribute="gKey">
     <table align="center", border="2", cellspacing="2", cellpadding="10", width="50">
         <tr>
-            <td><input type="text" name="0" value="${p0}"></td>
-            <td><input type="text" name="1" value="${p1}"></td>
-            <td><input type="text" name="2" value="${p2}"></td>
+            <td><form:input type = "text" path="g0" ></form:input></td>
+            <td><form:input type = "text" path="g1" ></form:input></td>
+            <td><form:input type = "text" path="g2" ></form:input></td>
         </tr>
         <tr>
-            <td><input type="text" name="3" value="${p3}"></td>
-            <td><input type="text" name="4" value="${p4}"></td>
-            <td><input type="text" name="5" value="${p5}"></td>
+            <td><form:input type = "text" path="g3" ></form:input></td>
+            <td><form:input type = "text" path="g4" ></form:input></td>
+            <td><form:input type = "text" path="g5" ></form:input></td>
         </tr>
         <tr>
-            <td><input type="text" name="6" value="${p6}"></td>
-            <td><input type="text" name="7" value="${p7}"></td>
-            <td><input type="text" name="8" value="${p8}"></td>
+            <td><form:input type = "text" path="g6" ></form:input></td>
+            <td><form:input type = "text" path="g7" ></form:input></td>
+            <td><form:input type = "text" path="g8" ></form:input></td>
         </tr>
-
     </table>
     <br>
+
     <c:choose>
         <c:when test="${win.equals('x')}">
             <spring:message code="label.winPlayer"/>
@@ -72,7 +72,8 @@
 
     <br>
     <input type="submit" align="center" value="<spring:message code="label.submit"/>" >
-</form>
+    </form:form>
+
     <a href="/aigame"><spring:message code="label.restart"/></a>
     <br>
     <div align="center" style="margin-top: 30px">
