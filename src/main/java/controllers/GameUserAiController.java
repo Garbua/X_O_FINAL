@@ -17,6 +17,8 @@ import service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -42,16 +44,17 @@ public class GameUserAiController extends ExceptionHandlerController {
 	public String gameUserAiGet(Model model){
 
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-		model.addAttribute("gKey", gamePoleDTO);
 
 		if(gameService.getGameByStatus("Started") == null) {
 			String s = StatusGame.valueOf("Started").getName();
 			Game game = new Game();
 			game.setStatus(s);
 			gameService.createGame(game);
+		}else {
+			displayGame(gameService.getGameByStatus("Started"), gamePoleDTO);
 		}
 
-
+		model.addAttribute("gKey", gamePoleDTO);
 		return "pages/aiGame";
 	}
 
@@ -68,7 +71,6 @@ public class GameUserAiController extends ExceptionHandlerController {
 			createMove(move,game,gPole,user);
 
 			if ( game.getWinner().getLogin() == null ) {
-//				createPlayer(user,game,move.getMove());
 				Player player = new Player();
 				player.setUser(user);
 				player.setGame(game);
@@ -91,11 +93,13 @@ public class GameUserAiController extends ExceptionHandlerController {
 			System.out.println("pole != 0");
 			for (int i = 0; i < 9; i++) {
 				String mv = gPole.getgAll().get(i);
-				if ("X".equalsIgnoreCase(mv)) {
+				if ("X".equalsIgnoreCase(mv) && mv != null) {
 					for (MoveEntity m : moveService.getMoveByGame(game)) {
-							if ((!m.getPole().equalsIgnoreCase(String.valueOf(i))) && "X".equalsIgnoreCase(mv)){
+							if (!m.getPole().equalsIgnoreCase(String.valueOf(i))){
 								move.setPole(String.valueOf(i));
 								move.setMove("X");
+								move.setUser(user);
+								moveService.createMove(move);
 							}
 						}
 					}
@@ -107,23 +111,21 @@ public class GameUserAiController extends ExceptionHandlerController {
 				if("X".equalsIgnoreCase(p) && p != null){
 					move.setPole(String.valueOf(i));
 					move.setMove("X");
-					break;
+					move.setUser(user);
+					moveService.createMove(move);
 				}
 			}
 		}
 
-		move.setUser(user);
-		moveService.createMove(move);
+//		move.setUser(user);
+//		moveService.createMove(move);
 	}
 
-//	public Player createPlayer(UserEntity user,Game game,String sign){
-//		Player player = new Player();
-//		player.setUser(user);
-//		player.setGame(game);
-//		player.setSign(sign);
-//		playerService.createPlayer(player);
-//		return player;
-//	}
-
-
+	public void displayGame(Game game, GamePoleDTO gamePoleDTO) {
+		Map<Integer, String> gPole2 = new HashMap<>();
+		for (MoveEntity m : moveService.getMoveByGame(game)) {
+			gPole2.put(Integer.valueOf(m.getPole()), m.getMove());
+		}
+		gamePoleDTO.setgAll(gPole2);
+	}
 }

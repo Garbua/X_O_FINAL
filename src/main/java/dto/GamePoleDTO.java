@@ -23,6 +23,7 @@ public class GamePoleDTO {
 	private String g7;
 	@Length(max = 1)
 	private String g8;
+	private Map<Integer, String> gAll = new HashMap<>();
 
 
 	public GamePoleDTO() {
@@ -102,7 +103,7 @@ public class GamePoleDTO {
 	}
 
 	public Map<Integer, String> getgAll() {
-		Map<Integer, String> gAll = new HashMap<>();
+
 		gAll.put(0, g0);
 		gAll.put(1, g1);
 		gAll.put(2, g2);
@@ -115,4 +116,16 @@ public class GamePoleDTO {
 		return gAll;
 	}
 
+	public void setgAll(Map<Integer, String> gAll) {
+		this.g0 = gAll.get(0);
+		this.g1 = gAll.get(1);
+		this.g2 = gAll.get(2);
+		this.g3 = gAll.get(3);
+		this.g4 = gAll.get(4);
+		this.g5 = gAll.get(5);
+		this.g6 = gAll.get(6);
+		this.g7 = gAll.get(7);
+		this.g8 = gAll.get(8);
+		this.gAll = gAll;
+	}
 }
