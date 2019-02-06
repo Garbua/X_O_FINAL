@@ -37,9 +37,12 @@
 <h1 align="center"><strong><spring:message code="label.gameAititle"/></strong> </h1>
 
     <form:form method="post" action="/aigame" modelAttribute="gKey">
+
+        <form:hidden path="idGame" value = "${idGame}"></form:hidden>
+
     <table align="center", border="2", cellspacing="2", cellpadding="10", width="50">
         <tr>
-            <td><form:input type = "text" path="g0" ></form:input></td>
+            <td><form:input type = "text" path="g0"  ></form:input></td>
             <td><form:input type = "text" path="g1" ></form:input></td>
             <td><form:input type = "text" path="g2" ></form:input></td>
         </tr>

@@ -23,6 +23,7 @@ public class GamePoleDTO {
 	private String g7;
 	@Length(max = 1)
 	private String g8;
+	private Long IdGame;
 	private Map<Integer, String> gAll = new HashMap<>();
 
 
@@ -100,6 +101,14 @@ public class GamePoleDTO {
 
 	public void setG8(String g8) {
 		this.g8 = g8;
+	}
+
+	public Long getIdGame() {
+		return IdGame;
+	}
+
+	public void setIdGame(Long idGame) {
+		IdGame = idGame;
 	}
 
 	public Map<Integer, String> getgAll() {

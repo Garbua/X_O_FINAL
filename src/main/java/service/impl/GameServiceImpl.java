@@ -15,6 +15,7 @@ public class GameServiceImpl implements GameService {
 	GameDAO gameDAO;
 
 	@Override
+	@Transactional
 	public Game getGameByStatus(String status) {
 		return gameDAO.getGameByStatus(status);
 	}
