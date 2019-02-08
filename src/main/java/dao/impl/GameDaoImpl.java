@@ -53,7 +53,7 @@ public class GameDaoImpl implements GameDAO {
 	@Override
 	public void update(Game game) {
 		Game mergeGame = (Game)sessionFactory.getCurrentSession().merge(game);
-		sessionFactory.getCurrentSession().update(mergeGame);
+		sessionFactory.getCurrentSession().saveOrUpdate(game);
 //		LOGGER.info(messageSource.getMessage();
 	}
 

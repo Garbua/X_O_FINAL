@@ -56,6 +56,15 @@ public class MoveDaoImpl implements MoveDAO {
 	}
 
 	@Override
+	public MoveEntity getMoveByGamePole(Game game, String pole) {
+		String movHQL = "FROM MoveEntity WHERE game = :game AND pole = :pole";
+		Query query = sessionFactory.getCurrentSession().createQuery(movHQL);
+		query.setParameter("game", game);
+		query.setParameter("pole", pole);
+		return (MoveEntity) query.getSingleResult();
+	}
+
+	@Override
 	public long getCountPoleDb(Game game) {
 		String moveHQL = "SELECT count (pole) FROM MoveEntity WHERE game_id = :game_id";
 		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
@@ -67,8 +76,7 @@ public class MoveDaoImpl implements MoveDAO {
 
 	@Override
 	public void updateMove(MoveEntity moveEntity) {
-		MoveEntity mergeMove = (MoveEntity) sessionFactory.getCurrentSession().merge(moveEntity);
-		sessionFactory.getCurrentSession().update(mergeMove);
+		sessionFactory.getCurrentSession().saveOrUpdate(moveEntity);
 //		LOGGER.info(messageSource.getMessage();
 	}
 

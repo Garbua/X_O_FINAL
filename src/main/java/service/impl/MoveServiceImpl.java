@@ -52,6 +52,12 @@ public class MoveServiceImpl implements MoveService {
 	}
 
 	@Override
+	@Transactional
+	public MoveEntity getMoveByGamePole(Game game, String pole){
+		return moveDAO.getMoveByGamePole(game, pole);
+	}
+
+	@Override
 	public long getCountPoleDb(Game game) {
 		return moveDAO.getCountPoleDb(game);
 	}

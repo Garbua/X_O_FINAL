@@ -1,6 +1,8 @@
 package service.impl;
 import dao.PlayerDAO;
+import entity.Game;
 import entity.Player;
+import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.PlayerService;
@@ -17,9 +19,8 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public void getPlayerByID(Long id) {
-		playerDAO.getPlayerByID(id);
-
+	public Player getPlayerByUserGame(UserEntity user, Game game) {
+		return playerDAO.getPlayerByUserGame( user, game);
 	}
 
 	@Override

@@ -15,11 +15,16 @@ import service.GameService;
 import service.MoveService;
 import service.PlayerService;
 import service.UserService;
+
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -61,11 +66,39 @@ public class GameUserAiController extends ExceptionHandlerController {
 			Game game = gameService.getGameByID(idGame);
 			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
 			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
-			MoveEntity move = new MoveEntity();
-			createMove(move,game,gPole,user);
-			createPlayer(move,game,user);
+			createMove(game,gPole,user);
 //			Проверка победителя:
 			checkWinner( "x",gPole,request);
+//			Ход компьютера:
+			UserEntity ai = userService.getUserByLogin("AI");
+			createMoveAi(game,gPole, ai);
+//			Проверка победителя:
+			checkWinner( "o",gPole,request);
+
+//			Запись победителя:
+				Game refGame = game;
+				switch (winner) {
+					case "x":
+						refGame.setWinner(user);
+						gameService.update(refGame);
+						break;
+					case "o":
+						refGame.setWinner(ai);
+						gameService.update(refGame);
+						break;
+					case "n":
+						UserEntity n = userService.getUserByLogin("Standoff");
+						refGame.setWinner(n);
+						gameService.update(refGame);
+						break;
+					case "":
+						break;
+					default:
+						break;
+				}
+
+			request.setAttribute("win", winner);
+			winner = "";
 
 		}else {
 			System.out.println("ERROR!!! VALID");
@@ -75,36 +108,29 @@ public class GameUserAiController extends ExceptionHandlerController {
 	}
 
 
-	public void createMove(MoveEntity move, Game game,GamePoleDTO gPole, UserEntity user){
-		move.setGame(game);
-		if(moveService.getCountPoleDb(game) != 0){
-			System.out.println("pole != 0");
-			for (int i = 0; i < 9; i++) {
-				String mv = gPole.getgAll().get(i);
-				if ("X".equalsIgnoreCase(mv) && mv != null) {
-					for (MoveEntity m : moveService.getMoveByGame(game)) {
-							if (!m.getPole().equalsIgnoreCase(String.valueOf(i))){
-								move.setPole(String.valueOf(i));
-								move.setMove("X");
-								move.setUser(user);
-								moveService.createMove(move);
-							}
-						}
-					}
-				}
-		}else {
-			System.out.println("pole == 0");
-			for (int i = 0; i < 9; i++){
-				String p = gPole.getgAll().get(i);
-				if("X".equalsIgnoreCase(p) && p != null){
-					move.setPole(String.valueOf(i));
-					move.setMove("X");
-					move.setUser(user);
-					moveService.createMove(move);
-				}
+	public void createMove(Game game,GamePoleDTO gPole, UserEntity user){
+
+		MoveEntity moveEntity = null;
+		MoveEntity move = new MoveEntity();
+
+	for (int i = 0; i < 9; i++) {
+		String mv = gPole.getgAll().get(i);
+		try {
+			moveEntity = moveService.getMoveByGamePole(game,String.valueOf(i));
+			if (!("".equalsIgnoreCase(mv) && "".equalsIgnoreCase(moveEntity.getMove()))) {
+				moveService.updateMove(moveEntity);
+			}
+		}catch (NoResultException nre){
+			if (!"".equalsIgnoreCase(mv)){
+				move.setGame(game);
+				move.setPole(String.valueOf(i));
+				move.setMove(mv);
+				move.setUser(user);
+				moveService.createMove(move);
 			}
 		}
-
+	}
+		createPlayer(move,game,user);
 	}
 
 	public void displayGame(Game game, GamePoleDTO gamePoleDTO) {
@@ -117,12 +143,45 @@ public class GameUserAiController extends ExceptionHandlerController {
 
 	public void createPlayer(MoveEntity move, Game game, UserEntity user){
 		if ( game.getWinner() == null ) {
-			Player player = new Player();
-			player.setUser(user);
-			player.setGame(game);
-			player.setSign(move.getMove());
-			playerService.createPlayer(player);
+			Player playerDb = playerService.getPlayerByUserGame(user,game);
+			if (playerDb.getUser().getId() == user.getId() && playerDb.getGame().getId_game() == game.getId_game()) {
+
+				playerService.updatePlayer(playerDb);
+			}else {
+				Player player = new Player();
+				player.setUser(user);
+				player.setGame(game);
+				player.setSign(move.getMove());
+				playerService.createPlayer(player);
+			}
 		}
+	}
+
+	public void createMoveAi (Game game,GamePoleDTO gPole,UserEntity ai){
+		String rPole = ai(gPole);
+		gPole.getgAll().put(Integer.valueOf(rPole), "o");
+		MoveEntity moveAi = new MoveEntity();
+		moveAi.setMove("o");
+		moveAi.setUser(ai);
+		moveAi.setPole(rPole);
+		moveAi.setGame(game);
+		moveService.createMove(moveAi);
+
+		createPlayer(moveAi,game,ai);
+	}
+
+	public String ai( GamePoleDTO gamePoleDTO) {
+		Random random = new Random();
+		String randomPole = "";
+		List<Integer> free = gamePoleDTO.getgAll().entrySet().stream().filter((p) -> p.getValue().equalsIgnoreCase("") ||
+				p.getValue() ==null ).map((p) -> p.getKey()).collect(Collectors.toList());
+		if ("".equals(winner) && (free.size() != 0)) {
+			int pole = random.nextInt(free.size());
+			randomPole = String.valueOf(pole);
+		}
+		free.clear();
+
+		return randomPole ;
 	}
 
 	public String checkWinner(String key,GamePoleDTO gamePoleDTO, HttpServletRequest request) {
@@ -141,8 +200,6 @@ public class GameUserAiController extends ExceptionHandlerController {
 
 		//проверка ничьей
 		drawCheck(gamePoleDTO);
-
-		request.setAttribute("win", winner);
 
 		return winner;
 
