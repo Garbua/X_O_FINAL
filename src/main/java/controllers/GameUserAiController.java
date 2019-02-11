@@ -71,7 +71,7 @@ public class GameUserAiController extends ExceptionHandlerController {
 			checkWinner( "x",gPole,request);
 //			Ход компьютера:
 			UserEntity ai = userService.getUserByLogin("AI");
-			createMoveAi(game,gPole, ai);
+			createMoveAi(game,gPole, ai,request);
 //			Проверка победителя:
 			checkWinner( "o",gPole,request);
 
@@ -80,15 +80,18 @@ public class GameUserAiController extends ExceptionHandlerController {
 				switch (winner) {
 					case "x":
 						refGame.setWinner(user);
+						refGame.setStatus(StatusGame.valueOf("Complete").getName());
 						gameService.update(refGame);
 						break;
 					case "o":
 						refGame.setWinner(ai);
+						refGame.setStatus(StatusGame.valueOf("Complete").getName());
 						gameService.update(refGame);
 						break;
 					case "n":
 						UserEntity n = userService.getUserByLogin("Standoff");
 						refGame.setWinner(n);
+						refGame.setStatus(StatusGame.valueOf("Complete").getName());
 						gameService.update(refGame);
 						break;
 					case "":
@@ -127,10 +130,10 @@ public class GameUserAiController extends ExceptionHandlerController {
 				move.setMove(mv);
 				move.setUser(user);
 				moveService.createMove(move);
+				createPlayer(move,game,user);
 			}
 		}
 	}
-		createPlayer(move,game,user);
 	}
 
 	public void displayGame(Game game, GamePoleDTO gamePoleDTO) {
@@ -143,11 +146,14 @@ public class GameUserAiController extends ExceptionHandlerController {
 
 	public void createPlayer(MoveEntity move, Game game, UserEntity user){
 		if ( game.getWinner() == null ) {
-			Player playerDb = playerService.getPlayerByUserGame(user,game);
-			if (playerDb.getUser().getId() == user.getId() && playerDb.getGame().getId_game() == game.getId_game()) {
+			Player playerDb = null;
+			try {
+				playerDb = playerService.getPlayerByUserGame(user,game);
+				if (playerDb != null){
+					playerService.updatePlayer(playerDb);
+				}
 
-				playerService.updatePlayer(playerDb);
-			}else {
+			}catch (NoResultException n){
 				Player player = new Player();
 				player.setUser(user);
 				player.setGame(game);
@@ -157,17 +163,20 @@ public class GameUserAiController extends ExceptionHandlerController {
 		}
 	}
 
-	public void createMoveAi (Game game,GamePoleDTO gPole,UserEntity ai){
+	public void createMoveAi (Game game,GamePoleDTO gPole,UserEntity ai,HttpServletRequest request){
 		String rPole = ai(gPole);
-		gPole.getgAll().put(Integer.valueOf(rPole), "o");
-		MoveEntity moveAi = new MoveEntity();
-		moveAi.setMove("o");
-		moveAi.setUser(ai);
-		moveAi.setPole(rPole);
-		moveAi.setGame(game);
-		moveService.createMove(moveAi);
-
-		createPlayer(moveAi,game,ai);
+		Map<Integer, String> gPoleNew = gPole.getgAll();
+		gPoleNew.put(Integer.valueOf(rPole), "o");
+		gPole.setgAll(gPoleNew);
+		request.setAttribute("p" + rPole, gPole.getgAll().get(rPole));
+//		MoveEntity moveAi = new MoveEntity();
+//		moveAi.setMove("o");
+//		moveAi.setUser(ai);
+//		moveAi.setPole(rPole);
+//		moveAi.setGame(game);
+//		moveService.createMove(moveAi);
+//		createPlayer(moveAi,game,ai);
+		createMove(game,gPole,ai);
 	}
 
 	public String ai( GamePoleDTO gamePoleDTO) {

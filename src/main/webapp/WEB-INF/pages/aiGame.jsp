@@ -42,19 +42,19 @@
 
     <table align="center", border="2", cellspacing="2", cellpadding="10", width="50">
         <tr>
-            <td><form:input type = "text" path="g0"  ></form:input></td>
-            <td><form:input type = "text" path="g1" ></form:input></td>
-            <td><form:input type = "text" path="g2" ></form:input></td>
+            <td><form:input type = "text" path="g0" value = "${p0}" ></form:input></td>
+            <td><form:input type = "text" path="g1" value = "${p1}" ></form:input></td>
+            <td><form:input type = "text" path="g2" value = "${p2}" ></form:input></td>
         </tr>
         <tr>
-            <td><form:input type = "text" path="g3" ></form:input></td>
-            <td><form:input type = "text" path="g4" ></form:input></td>
-            <td><form:input type = "text" path="g5" ></form:input></td>
+            <td><form:input type = "text" path="g3" value = "${p3}" ></form:input></td>
+            <td><form:input type = "text" path="g4" value = "${p4}" ></form:input></td>
+            <td><form:input type = "text" path="g5" value = "${p5}" ></form:input></td>
         </tr>
         <tr>
-            <td><form:input type = "text" path="g6" ></form:input></td>
-            <td><form:input type = "text" path="g7" ></form:input></td>
-            <td><form:input type = "text" path="g8" ></form:input></td>
+            <td><form:input type = "text" path="g6" value = "${p6}" ></form:input></td>
+            <td><form:input type = "text" path="g7" value = "${p7}" ></form:input></td>
+            <td><form:input type = "text" path="g8" value = "${p8}" ></form:input></td>
         </tr>
     </table>
     <br>
