@@ -14,7 +14,7 @@ import service.UserService;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class ProfileController extends ExceptionHandlerController {
+public class ProfileController {
 
 	@Autowired
 	private UserService userService;

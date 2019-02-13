@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/registration")
-public class RegController extends ExceptionHandlerController {
+public class RegController {
 
 	@Autowired
 	private ProfileValidator regValidator;
@@ -39,15 +39,15 @@ public class RegController extends ExceptionHandlerController {
 		if (result.hasErrors()) {
 			return "pages/registrationPage";
 		} else if (userService.loginExists(userEntity.getLogin())) {
-			model.addAttribute("reg_very", "0");
+			model.addAttribute("reg_very", "label.reg.eslogin");
 			return "pages/registrationPage";
 		} else {
 			if (userService.emailExists(userEntity.getEmail())) {
-				model.addAttribute("reg_very", "1");
+				model.addAttribute("reg_very", "label.reg.esemail");
 				return "pages/registrationPage";
 			} else {
 				try {
-					model.addAttribute("reg_very", "success");
+					model.addAttribute("reg_very", "label.reg.success");
 					model.addAttribute("userDTO", new UserDTO());
 					userService.createUser(userEntity);
 				} catch (Exception e) {

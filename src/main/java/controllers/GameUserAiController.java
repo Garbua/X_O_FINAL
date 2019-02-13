@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-public class GameUserAiController extends ExceptionHandlerController {
+public class GameUserAiController {
 	@Autowired
 	private GameService gameService;
 	@Autowired

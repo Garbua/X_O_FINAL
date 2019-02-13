@@ -31,19 +31,13 @@
     <hr>
     <br>
     <h3 align="center">
-        <spring:message code="label.reg.eslogin" var="eslogin"></spring:message>
-        <spring:message code="label.reg.esemail" var="esemail"></spring:message>
+
        <span class="error">
-           <c:choose>
-           <c:when test="${'0'.equals(reg_very)}">
-               <b>${eslogin}</b>
-           </c:when>
-           <c:when test="${'1'.equals(reg_very)}">
-               <b>${esemail}</b>
-           </c:when>
-           <c:otherwise></c:otherwise>
-       </c:choose>
+           <c:if test="${!''.equals(reg_very) and reg_very ne null }">
+               <b> <spring:message code="${reg_very}"></spring:message></b>
+           </c:if>
        </span>
+
     </h3>
     <br>
 

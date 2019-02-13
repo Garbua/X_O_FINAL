@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @ControllerAdvice
-public abstract class ExceptionHandlerController {
+public class ExceptionHandlerController {
 
 	@ExceptionHandler(Exception.class)
 	public String handlerException(Exception ex, Model model){

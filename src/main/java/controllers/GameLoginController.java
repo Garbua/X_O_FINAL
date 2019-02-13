@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class GameLoginController extends ExceptionHandlerController {
+public class GameLoginController {
 
 
 	@RequestMapping(value = "/gamelogin", method = RequestMethod.GET)
@@ -16,7 +16,7 @@ public class GameLoginController extends ExceptionHandlerController {
 	}
 
 	@RequestMapping(value = "/gamelogin", method = RequestMethod.POST)
-	public String GameLoginPage(){
+	public String gameLoginPage(){
 		return "pages/nickGame";
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController extends ExceptionHandlerController {
+public class HomeController {
 
 	/**
 	 * Метод GET стартовой страницы

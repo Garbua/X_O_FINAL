@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value ="/login")
-public class LoginController extends ExceptionHandlerController{
+public class LoginController {
 
 	@Autowired
 	private LoginValid loginValid;
@@ -58,15 +58,14 @@ public class LoginController extends ExceptionHandlerController{
 					session.setAttribute("userDTO", userDTO);
 					return "/pages/gameLogin";
 				}
-				model.addAttribute("form_error", "0");
+				model.addAttribute("form_error", "label.error0");
 				return "pages/gameLogin";
 			} else {
-				model.addAttribute("form_error", "1");
+				model.addAttribute("form_error", "label.error1");
 				return "pages/index";
 			}
 		} else {
-			model.addAttribute("form_error", String.format("2",
-					userDTO.getLogin()));
+			model.addAttribute("form_error", "label.error2");
 			return "pages/index";
 		}
 

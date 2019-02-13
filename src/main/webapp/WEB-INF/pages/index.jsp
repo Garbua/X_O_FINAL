@@ -32,28 +32,21 @@
     <spring:message code="label.error2" var="errror2"></spring:message>
     <h3 align="center">
        <span class="error">
-               <c:choose>
-                   <c:when test="${'0'.equals(form_error)}">
-                       <b>${errror0}</b>
-                   </c:when>
-                   <c:when test="${'1'.equals(form_error)}">
-                       <b>${errror1}</b>
-                   </c:when>
-                   <c:when test="${'2'.equals(form_error)}">
-                       <b>${errror2}</b>
-                   </c:when>
-                   <c:otherwise></c:otherwise>
-               </c:choose>
+<c:if test="${!''.equalsIgnoreCase(form_error) and form_error ne null}">
+    <b> <spring:message code="${form_error}"></spring:message></b>
+</c:if>
        </span>
     </h3>
     <br>
     <h3 align="center">
         <spring:message code="label.addnewuser" var="succes"></spring:message>
+
        <span class="error">
            <c:if test="${'success'.equals(reg_very)}">
            <b>${succes} </b>
        </c:if>
        </span>
+
     </h3>
 
         <form:form method="POST" action="/login" modelAttribute="userDTO">
@@ -81,7 +74,6 @@
         <spring:message code="label.submit.in" var="in"></spring:message>
         <input type="submit" value= "${in}"/>
     </div>
-
 
 </form:form>
 
