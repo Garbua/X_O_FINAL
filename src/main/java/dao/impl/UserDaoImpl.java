@@ -48,22 +48,10 @@ public class UserDaoImpl implements UserDAO {
 	 * @return - сохранённый пользователь
 	 */
 	@Override
-	public UserEntity createUser(UserEntity user) {
+	public UserEntity saveOfUpdate(UserEntity user) {
 		sessionFactory.getCurrentSession().saveOrUpdate(user);
 		LOGGER.info(messageSource.getMessage("dao.user.save", new Object [] {user},Locale.ENGLISH));
 		return user;
-	}
-
-	/**
-	 * Метод редактирования данных пользователя в БД
-	 * @param user -  редактруемый объект пользователя
-	 */
-	@Override
-	public void updateUser(UserEntity user) {
-		UserEntity mergedUser = (UserEntity) sessionFactory.getCurrentSession().merge(user);
-		sessionFactory.getCurrentSession().update(mergedUser);
-		LOGGER.info(messageSource.getMessage("dao.user.update", new Object[]{user}, Locale.ENGLISH));
-
 	}
 
 	/**

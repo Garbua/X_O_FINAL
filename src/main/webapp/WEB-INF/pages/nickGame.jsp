@@ -54,20 +54,11 @@
         </tr>
 
     </table>
+
     <br>
-    <c:choose>
-        <c:when test="${win.equals('x')}">
-            <spring:message code="label.winPlayer"/>
-        </c:when>
-        <c:when test="${win.equals('o')}">
-            <spring:message code="label.winAI"/>
-        </c:when>
-        <c:when test="${win.equals('n')}">
-            <spring:message code="label.winNO"/>
-        </c:when>
-        <c:otherwise>
-        </c:otherwise>
-    </c:choose>
+    <c:if test="${!''.equalsIgnoreCase(win) and win ne null}">
+        <b> <spring:message code="${win}"></spring:message></b>
+    </c:if>
 
     <br>
     <input type="submit" align="center" value="<spring:message code="label.submit"/>" >

@@ -7,8 +7,7 @@ public interface GameService {
 
 	Game getGameByStatus (String status);
 	Game getGameByID (Long id);
-	void createGame (Game game);
-	void update (Game game);
+	void saveOfUpdate(Game game);
 	void delete (Game game);
 
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 
 @Service
+@Transactional
 public class MoveServiceImpl implements MoveService {
 
 
@@ -20,47 +21,27 @@ public class MoveServiceImpl implements MoveService {
 	MoveDAO moveDAO;
 
 	@Override
-	@Transactional
 	public List<MoveEntity> getMoveByGame(Game game) {
 		return moveDAO.getMoveByGame(game);
 	}
 
 	@Override
-	@Transactional
 	public List<MoveEntity> getMoveByUser(UserEntity user) {
 		return moveDAO.getMoveByUser(user);
 	}
 
 	@Override
-	@Transactional
-	public MoveEntity createMove(MoveEntity moveEntity) {
-		return moveDAO.createMove(moveEntity);
+	public MoveEntity saveOfUpdate(MoveEntity moveEntity) {
+		return moveDAO.saveOfUpdate(moveEntity);
 	}
 
 	@Override
-	@Transactional
-	public void updateMove(MoveEntity moveEntity) {
-		moveDAO.updateMove(moveEntity);
-
-	}
-
-	@Override
-	@Transactional
 	public void deleteMove(MoveEntity moveEntity) {
 		moveDAO.deleteMove(moveEntity);
-
 	}
 
 	@Override
-	@Transactional
 	public MoveEntity getMoveByGamePole(Game game, String pole){
 		return moveDAO.getMoveByGamePole(game, pole);
 	}
-
-	@Override
-	public long getCountPoleDb(Game game) {
-		return moveDAO.getCountPoleDb(game);
-	}
-
-
 }

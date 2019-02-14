@@ -6,8 +6,7 @@ import entity.UserEntity;
 public interface UserDAO {
 
 	UserEntity getUserByLogin (String login);
-	UserEntity createUser (UserEntity user);
-	void updateUser (UserEntity user);
+	UserEntity saveOfUpdate(UserEntity user);
 	void deleteUser (UserDTO user);
 	boolean passwordCorrect (String pass, String login);
 	boolean loginExists (String login);

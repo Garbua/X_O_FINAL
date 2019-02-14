@@ -49,7 +49,7 @@ public class RegController {
 				try {
 					model.addAttribute("reg_very", "label.reg.success");
 					model.addAttribute("userDTO", new UserDTO());
-					userService.createUser(userEntity);
+					userService.saveOfUpdate(userEntity);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -10,52 +10,38 @@ import service.UserService;
 
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDAO userDAO;
 
 	@Override
-	@Transactional
 	public UserEntity getUserByLogin(String login) {
 		return userDAO.getUserByLogin(login);
 	}
 
 	@Override
-	@Transactional
-	public void createUser(UserEntity user) {
-		userDAO.createUser(user);
-
+	public void saveOfUpdate(UserEntity user) {
+		userDAO.saveOfUpdate(user);
 	}
 
 	@Override
-	@Transactional
-	public void updateUser(UserEntity user) {
-		userDAO.updateUser(user);
-
-	}
-
-	@Override
-	@Transactional
 	public void deleteUser(UserDTO user) {
 		userDAO.deleteUser(user);
-
 	}
 
 	@Override
-	@Transactional
 	public boolean passwordCorrect(String pass, String login) {
 		return userDAO.passwordCorrect(pass, login);
 	}
 
 	@Override
-	@Transactional
 	public boolean loginExists(String login) {
 		return userDAO.loginExists(login);
 	}
 
 	@Override
-	@Transactional
 	public boolean emailExists(String email) {
 		return userDAO.emailExists(email);
 	}

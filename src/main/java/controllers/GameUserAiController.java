@@ -48,7 +48,7 @@ public class GameUserAiController {
 			String s = StatusGame.valueOf("Started").getName();
 			Game game = new Game();
 			game.setStatus(s);
-			gameService.createGame(game);
+			gameService.saveOfUpdate(game);
 		}else {
 			displayGame(gameService.getGameByStatus("Started"), gamePoleDTO);
 		}
@@ -81,18 +81,21 @@ public class GameUserAiController {
 					case "x":
 						refGame.setWinner(user);
 						refGame.setStatus(StatusGame.valueOf("Complete").getName());
-						gameService.update(refGame);
+						gameService.saveOfUpdate(refGame);
+						request.setAttribute("win", "label.winPlayer");
 						break;
 					case "o":
 						refGame.setWinner(ai);
 						refGame.setStatus(StatusGame.valueOf("Complete").getName());
-						gameService.update(refGame);
+						gameService.saveOfUpdate(refGame);
+						request.setAttribute("win", "label.winAI");
 						break;
 					case "n":
 						UserEntity n = userService.getUserByLogin("Standoff");
 						refGame.setWinner(n);
 						refGame.setStatus(StatusGame.valueOf("Complete").getName());
-						gameService.update(refGame);
+						gameService.saveOfUpdate(refGame);
+						request.setAttribute("win", "label.winNO");
 						break;
 					case "":
 						break;
@@ -121,7 +124,7 @@ public class GameUserAiController {
 		try {
 			moveEntity = moveService.getMoveByGamePole(game,String.valueOf(i));
 			if (!("".equalsIgnoreCase(mv) && "".equalsIgnoreCase(moveEntity.getMove()))) {
-				moveService.updateMove(moveEntity);
+				moveService.saveOfUpdate(moveEntity);
 			}
 		}catch (NoResultException nre){
 			if (!"".equalsIgnoreCase(mv)){
@@ -129,7 +132,7 @@ public class GameUserAiController {
 				move.setPole(String.valueOf(i));
 				move.setMove(mv);
 				move.setUser(user);
-				moveService.createMove(move);
+				moveService.saveOfUpdate(move);
 				createPlayer(move,game,user);
 			}
 		}
@@ -150,7 +153,7 @@ public class GameUserAiController {
 			try {
 				playerDb = playerService.getPlayerByUserGame(user,game);
 				if (playerDb != null){
-					playerService.updatePlayer(playerDb);
+					playerService.saveOfUpdate(playerDb);
 				}
 
 			}catch (NoResultException n){
@@ -158,7 +161,7 @@ public class GameUserAiController {
 				player.setUser(user);
 				player.setGame(game);
 				player.setSign(move.getMove());
-				playerService.createPlayer(player);
+				playerService.saveOfUpdate(player);
 			}
 		}
 	}
@@ -174,8 +177,8 @@ public class GameUserAiController {
 //		moveAi.setUser(ai);
 //		moveAi.setPole(rPole);
 //		moveAi.setGame(game);
-//		moveService.createMove(moveAi);
-//		createPlayer(moveAi,game,ai);
+//		moveService.saveOfUpdate(moveAi);
+//		saveOfUpdate(moveAi,game,ai);
 		createMove(game,gPole,ai);
 	}
 

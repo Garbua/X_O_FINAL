@@ -7,7 +7,6 @@ import entity.UserEntity;
 
 public interface PlayerService {
 
-	void createPlayer (Player player);
+	void saveOfUpdate(Player player);
 	Player getPlayerByUserGame(UserEntity user, Game game);
-	void updatePlayer(Player player);
 }

@@ -10,6 +10,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 
 @Repository("game")
 @Transactional
@@ -28,7 +30,7 @@ public class GameDaoImpl implements GameDAO {
 		String gameHQL = "FROM Game WHERE status = :status";
 		Query query = sessionFactory.getCurrentSession().createQuery(gameHQL);
 		query.setParameter("status", statusGame);
-//		LOGGER.info(messageSource.getMessage("dao.game.getGameById", new Object[]{id}, Locale.ENGLISH));
+		LOGGER.info(messageSource.getMessage("dao.game.getGameByStatus", new Object[]{statusGame}, Locale.ENGLISH));
 		return (Game) query.uniqueResult();
 	}
 
@@ -37,34 +39,22 @@ public class GameDaoImpl implements GameDAO {
 		String gameHQL = "FROM Game WHERE id_game = :id";
 		Query query = sessionFactory.getCurrentSession().createQuery(gameHQL);
 		query.setParameter("id", id);
-//		LOGGER.info(messageSource.getMessage("dao.game.getGameById", new Object[]{id}, Locale.ENGLISH));
+		LOGGER.info(messageSource.getMessage("dao.game.getGameById", new Object[]{id}, Locale.ENGLISH));
 		return (Game) query.uniqueResult();
 	}
 
 	@Override
-	public Game createGame(Game game) {
+	public Game saveOfUpdate(Game game) {
 		sessionFactory.getCurrentSession().saveOrUpdate(game);
-//		LOGGER.info(messageSource.getMessage();
+		LOGGER.info(messageSource.getMessage("dao.game.saveOfUpdate", new Object[]{game}, Locale.ENGLISH));
 
 		return game;
-	}
-
-
-	@Override
-	public void update(Game game) {
-		Game mergeGame = (Game)sessionFactory.getCurrentSession().merge(game);
-		sessionFactory.getCurrentSession().saveOrUpdate(game);
-//		LOGGER.info(messageSource.getMessage();
 	}
 
 	@Override
 	public void delete(Game game) {
 		sessionFactory.getCurrentSession().delete(game);
-//		LOGGER.info(messageSource.getMessage();
+		LOGGER.info(messageSource.getMessage("dao.game.delete", new Object[]{game}, Locale.ENGLISH));
 	}
 
-	@Override
-	public void refresh(Game game) {
-		sessionFactory.getCurrentSession().refresh(game);
-	}
 }

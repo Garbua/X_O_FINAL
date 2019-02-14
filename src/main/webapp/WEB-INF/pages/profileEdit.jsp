@@ -46,23 +46,6 @@
 
         <hr>
         <br>
-
-        <spring:message code="label.reg.esemail" var="esemail"></spring:message>
-        <spring:message code="label.reg.espass" var="espass"></spring:message>
-
-        <h3 align="center">
-            <span class="error">
-                <c:choose>
-                    <c:when test="${'0'.equals(edit_very)}">
-                        <b>${esemail}</b>
-                    </c:when>
-                <c:when test="${'1'.equals(edit_very)}">
-                    <b>${espass}</b>
-                </c:when>
-                <c:otherwise></c:otherwise>
-            </c:choose>
-       </span>
-        </h3>
         <br>
             <form:form method="POST" action="/profileedit" modelAttribute="profileedit">
             <table align="center">

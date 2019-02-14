@@ -10,10 +10,8 @@ public interface MoveDAO {
 
 	List<MoveEntity> getMoveByGame (Game game);
 	List<MoveEntity> getMoveByUser (UserEntity user);
-	MoveEntity createMove (MoveEntity moveEntity);
+	MoveEntity saveOfUpdate(MoveEntity moveEntity);
 	MoveEntity getMoveByGamePole(Game game, String pole);
-	long getCountPoleDb(Game game);
-	void updateMove (MoveEntity moveEntity);
 	void deleteMove (MoveEntity moveEntity);
 
 }

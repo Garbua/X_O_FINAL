@@ -34,7 +34,7 @@ public class MoveDaoImpl implements MoveDAO {
 		String moveHQL = "FROM MoveEntity WHERE game_id = :game_id";
 		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
 		query.setParameter("game_id", game.getId_game());
-//		LOGGER.info(messageSource.getMessage("dao.move.getMoveByGame", new Object[]{game}, Locale.ENGLISH));
+		LOGGER.info(messageSource.getMessage("dao.move.getMoveByGame", new Object[]{game}, Locale.ENGLISH));
 		return (List<MoveEntity>) query.getResultList();
 	}
 
@@ -43,15 +43,15 @@ public class MoveDaoImpl implements MoveDAO {
 		String moveHQL = "FROM MoveEntity WHERE user_id = :user_id";
 		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
 		query.setParameter("user_id", user.getId());
-//		LOGGER.info(messageSource.getMessage();
+		LOGGER.info(messageSource.getMessage("dao.move.getMoveByUser", new Object[]{user}, Locale.ENGLISH));
 		return (List<MoveEntity>) query.getSingleResult();
 	}
 
 
 	@Override
-	public MoveEntity createMove(MoveEntity moveEntity) {
+	public MoveEntity saveOfUpdate(MoveEntity moveEntity) {
 		sessionFactory.getCurrentSession().saveOrUpdate(moveEntity);
-		//		LOGGER.info(messageSource.getMessage();
+				LOGGER.info(messageSource.getMessage("dao.move.saveOfUpdate", new Object[]{moveEntity}, Locale.ENGLISH));
 		return moveEntity;
 	}
 
@@ -65,25 +65,9 @@ public class MoveDaoImpl implements MoveDAO {
 	}
 
 	@Override
-	public long getCountPoleDb(Game game) {
-		String moveHQL = "SELECT count (pole) FROM MoveEntity WHERE game_id = :game_id";
-		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
-		query.setParameter("game_id", game.getId_game());
-		List listResult = query.list();
-		Number number = (Number) listResult.get(0);
-		return number.longValue();
-	}
-
-	@Override
-	public void updateMove(MoveEntity moveEntity) {
-		sessionFactory.getCurrentSession().saveOrUpdate(moveEntity);
-//		LOGGER.info(messageSource.getMessage();
-	}
-
-	@Override
 	public void deleteMove(MoveEntity moveEntity) {
 		sessionFactory.getCurrentSession().delete(moveEntity);
-		//		LOGGER.info(messageSource.getMessage();
+				LOGGER.info(messageSource.getMessage("dao.move.delete", new Object[]{moveEntity}, Locale.ENGLISH));
 
 	}
 

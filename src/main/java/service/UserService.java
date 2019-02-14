@@ -5,8 +5,7 @@ import entity.UserEntity;
 
 public interface UserService {
 	UserEntity getUserByLogin (String login);
-	void createUser (UserEntity user);
-	void updateUser (UserEntity user);
+	void saveOfUpdate(UserEntity user);
 	void deleteUser (UserDTO user);
 	boolean passwordCorrect (String pass, String login);
 	boolean loginExists (String login);

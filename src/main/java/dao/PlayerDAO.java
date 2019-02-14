@@ -6,8 +6,7 @@ import entity.UserEntity;
 
 public interface PlayerDAO {
 
-	Player createPlayer(Player player);
+	Player saveOfUpdate(Player player);
 	Player getPlayerByUserGame(UserEntity user, Game game);
-	void updatePlayer(Player player);
 
 }

@@ -23,16 +23,14 @@ public class ProfileController {
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String viewProfile(Model model, HttpSession session){
 		UserDTO userDTO = (UserDTO)session.getAttribute("userDTO");
-		UserEntity userEntity = userService.getUserByLogin(userDTO.getLogin());
-		model.addAttribute("profile", userEntity);
+		model.addAttribute("profile", userDTO);
 		return "/pages/profile";
 	}
 
 	@RequestMapping(value = "/profileedit", method = RequestMethod.GET)
 	public String editProfile(Model model, HttpSession session){
 		UserDTO userDTO = (UserDTO)session.getAttribute("userDTO");
-		UserEntity userEntity = userService.getUserByLogin(userDTO.getLogin());
-		model.addAttribute("profileedit", userEntity);
+		model.addAttribute("profileedit", userDTO);
 		return "pages/profileEdit" ;
 	}
 
