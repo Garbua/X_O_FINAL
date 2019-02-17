@@ -20,10 +20,7 @@ import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -44,17 +41,37 @@ public class GameUserAiController {
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
 	public String gameUserAiGet(Model model, HttpServletRequest request){
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-		if(gameService.getGameByStatus("Started") == null) {
-			String s = StatusGame.valueOf("Started").getName();
+			String s = StatusGame.valueOf("New").getName();
 			Game game = new Game();
 			game.setStatus(s);
 			gameService.saveOfUpdate(game);
-		}else {
-			displayGame(gameService.getGameByStatus("Started"), gamePoleDTO);
-		}
-		request.setAttribute("idGame", gameService.getGameByStatus("Started").getId_game());
-
+		request.setAttribute("idGame", gameService.getGameByStatus(s).get(0).getId_game());
 		model.addAttribute("gKey", gamePoleDTO);
+
+//		if(gameService.getGameByStatus("Started") == null) {
+//			String s = StatusGame.valueOf("Started").getName();
+//			Game game = new Game();
+//			game.setStatus(s);
+//			gameService.saveOfUpdate(game);
+//		}else {
+//			displayGame(gameService.getGameByStatus("Started"), gamePoleDTO);
+//		}
+//		request.setAttribute("idGame", gameService.getGameByStatus("Started").getId_game());
+//
+//		model.addAttribute("gKey", gamePoleDTO);
+		return "pages/aiGame";
+	}
+
+	@RequestMapping(value = "/aigame", method = RequestMethod.GET, params = "continue")
+	public String continueGameUserAiGet(Model model, HttpServletRequest request){
+		GamePoleDTO gamePoleDTO = new GamePoleDTO();
+		if(gameService.getGameByStatus("Started") != null) {
+			displayGame(gameService.getGameByStatus("Started").get(0), gamePoleDTO);
+			request.setAttribute("idGame", gameService.getGameByStatus("Started").get(0).getId_game());
+			model.addAttribute("gKey", gamePoleDTO);
+		}else {
+			return "pages/gameLogin";
+		}
 		return "pages/aiGame";
 	}
 
@@ -64,6 +81,8 @@ public class GameUserAiController {
 		if(!result.hasErrors()) {
 //			Мой ход :
 			Game game = gameService.getGameByID(idGame);
+			game.setStatus(StatusGame.Started.getName());
+			gameService.saveOfUpdate(game);
 			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
 			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
 			createMove(game,gPole,user);
@@ -102,13 +121,7 @@ public class GameUserAiController {
 					default:
 						break;
 				}
-
-			request.setAttribute("win", winner);
 			winner = "";
-
-		}else {
-			System.out.println("ERROR!!! VALID");
-			System.out.println(result.toString());
 		}
 		return "pages/aiGame";
 	}
@@ -184,12 +197,17 @@ public class GameUserAiController {
 
 	public String ai( GamePoleDTO gamePoleDTO) {
 		Random random = new Random();
-		String randomPole = "";
-		List<Integer> free = gamePoleDTO.getgAll().entrySet().stream().filter((p) -> p.getValue().equalsIgnoreCase("") ||
-				p.getValue() ==null ).map((p) -> p.getKey()).collect(Collectors.toList());
-		if ("".equals(winner) && (free.size() != 0)) {
+		String randomPole = null;
+		List<Integer> free = new ArrayList<>();
+		Map<Integer, String> map = gamePoleDTO.getgAll();
+		for (int i = 0; i < 9 ; i++) {
+			if(map.get(i) == null || "".equalsIgnoreCase(map.get(i)))
+				free.add(i);
+		}
+
+		if (free.size() != 0) {
 			int pole = random.nextInt(free.size());
-			randomPole = String.valueOf(pole);
+			randomPole = String.valueOf(free.get(pole));
 		}
 		free.clear();
 

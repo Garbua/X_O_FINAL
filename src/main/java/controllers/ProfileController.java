@@ -36,7 +36,7 @@ public class ProfileController {
 
 	@RequestMapping(value = "/profileedit", method = RequestMethod.POST)
 	public String profileEditProcess(Model model, @ModelAttribute ("profileedit") UserEntity newUser){
-		userService.updateUser(newUser);
+		userService.saveOfUpdate(newUser);
 		model.addAttribute("profile", newUser);
 		return "pages/profile";
 	}

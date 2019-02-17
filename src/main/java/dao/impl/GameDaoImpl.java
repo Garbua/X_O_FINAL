@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Locale;
 
 
@@ -26,12 +27,12 @@ public class GameDaoImpl implements GameDAO {
 	private MessageSource messageSource;
 
 	@Override
-	public Game getGameByStatus(String statusGame) {
+	public List<Game> getGameByStatus(String statusGame) {
 		String gameHQL = "FROM Game WHERE status = :status";
 		Query query = sessionFactory.getCurrentSession().createQuery(gameHQL);
 		query.setParameter("status", statusGame);
 		LOGGER.info(messageSource.getMessage("dao.game.getGameByStatus", new Object[]{statusGame}, Locale.ENGLISH));
-		return (Game) query.uniqueResult();
+		return (List<Game>) query.getResultList();
 	}
 
 	@Override

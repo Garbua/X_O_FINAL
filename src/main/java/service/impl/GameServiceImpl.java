@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.GameService;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class GameServiceImpl implements GameService {
@@ -15,7 +17,7 @@ public class GameServiceImpl implements GameService {
 	GameDAO gameDAO;
 
 	@Override
-	public Game getGameByStatus(String status) {
+	public List<Game> getGameByStatus(String status) {
 		return gameDAO.getGameByStatus(status);
 	}
 

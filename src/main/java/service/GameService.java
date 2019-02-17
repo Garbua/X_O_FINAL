@@ -2,10 +2,12 @@ package service;
 
 import entity.Game;
 
+import java.util.List;
+
 
 public interface GameService {
 
-	Game getGameByStatus (String status);
+	List<Game> getGameByStatus (String status);
 	Game getGameByID (Long id);
 	void saveOfUpdate(Game game);
 	void delete (Game game);

@@ -33,12 +33,17 @@
     <h1><spring:message code="label.welcomelogin" arguments="${sessionScope.userDTO.login}"></spring:message> </h1>
     <br>
     <br>
-    <spring:message code="label.gameAititle" var="gameAiLabel"></spring:message>
+    <spring:message code="label.NewGameAi" var="newGameAiLabel"></spring:message>
+    <spring:message code="label.ContinueGameAi" var="continueGameAiLabel"></spring:message>
     <div style="...">
         <form action="/aigame" method="get">
-            <input type="submit" value="${gameAiLabel}"/>
+            <input type="submit" value="${newGameAiLabel}"/>
+            <p></p>
+            <input type="submit" name="continue" value="${continueGameAiLabel}"/>
         </form>
     </div>
+
+
 </center>
 
 </body>
