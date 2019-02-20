@@ -24,4 +24,8 @@ public class PlayerServiceImpl implements PlayerService {
 	public Player getPlayerByUserGame(UserEntity user, Game game) {
 		return playerDAO.getPlayerByUserGame( user, game);
 	}
+	@Override
+	public Player getPlayerByGameSign(Game game, String sign) {
+		return playerDAO.getPlayerByGameSign( game, sign);
+	}
 }

@@ -44,4 +44,15 @@ public class PlayerDaoImpl implements PlayerDAO {
 		return (Player) query.getSingleResult();
 
 	}
+
+	@Override
+	public Player getPlayerByGameSign(Game game, String sign) {
+		String playerHQL = "FROM Player WHERE game = :game AND sign = :sign";
+		Query query = sessionFactory.getCurrentSession().createQuery(playerHQL);
+		query.setParameter("game", game);
+		query.setParameter("sign", sign);
+		LOGGER.info(messageSource.getMessage("dao.player.getPlayerByGameSign",  new Object[]{game,sign},Locale.ENGLISH));
+		return (Player) query.getSingleResult();
+
+	}
 }

@@ -8,5 +8,6 @@ public interface PlayerDAO {
 
 	Player saveOfUpdate(Player player);
 	Player getPlayerByUserGame(UserEntity user, Game game);
+	Player getPlayerByGameSign(Game game, String sign);
 
 }
