@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.ProfileDTO;
 import dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String displayHome(Model model) {
-		model.addAttribute("userDTO", new UserDTO());
+		model.addAttribute("profileDTO", new ProfileDTO());
 		return "pages/index";
 	}
 }

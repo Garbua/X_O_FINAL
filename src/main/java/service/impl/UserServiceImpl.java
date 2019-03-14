@@ -1,6 +1,7 @@
 package service.impl;
 
 import dao.UserDAO;
+import dto.ProfileDTO;
 import dto.UserDTO;
 import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class UserServiceImpl implements UserService {
 	UserDAO userDAO;
 
 	@Override
+	public UserEntity getUserById(Long id) {
+		return userDAO.getUserById(id);
+	}
+
+	@Override
 	public UserEntity getUserByLogin(String login) {
 		return userDAO.getUserByLogin(login);
 	}
@@ -27,8 +33,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(UserDTO user) {
-		userDAO.deleteUser(user);
+	public void deleteUser(Long id) {
+		userDAO.deleteUser(id);
 	}
 
 	@Override

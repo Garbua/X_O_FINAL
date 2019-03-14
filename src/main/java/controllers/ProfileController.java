@@ -1,5 +1,7 @@
 package controllers;
 
+import converter.ConverterImpl;
+import dto.ProfileDTO;
 import dto.UserDTO;
 import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +25,26 @@ public class ProfileController {
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String viewProfile(Model model, HttpSession session){
 		UserDTO userDTO = (UserDTO)session.getAttribute("userDTO");
-		model.addAttribute("profile", userDTO);
+		UserEntity user = userService.getUserById(userDTO.getId());
+		ProfileDTO profileDto = new ConverterImpl().createFrom(user);
+		model.addAttribute("profile", profileDto);
 		return "/pages/profile";
 	}
 
 	@RequestMapping(value = "/profileedit", method = RequestMethod.GET)
 	public String editProfile(Model model, HttpSession session){
 		UserDTO userDTO = (UserDTO)session.getAttribute("userDTO");
-		model.addAttribute("profileedit", userDTO);
+		UserEntity user = userService.getUserById(userDTO.getId());
+		ProfileDTO profileDto = new ConverterImpl().createFrom(user);
+		model.addAttribute("profileedit", profileDto);
 		return "pages/profileEdit" ;
 	}
 
 	@RequestMapping(value = "/profileedit", method = RequestMethod.POST)
-	public String profileEditProcess(Model model, @ModelAttribute ("profileedit") UserEntity newUser){
+	public String profileEditProcess(Model model, @ModelAttribute ("profileedit") ProfileDTO profileDTO){
+		UserEntity newUser = new ConverterImpl().createFrom(profileDTO);
 		userService.saveOfUpdate(newUser);
-		model.addAttribute("profile", newUser);
+		model.addAttribute("profile", profileDTO);
 		return "pages/profile";
 	}
 
@@ -45,9 +52,9 @@ public class ProfileController {
 	@RequestMapping(value = "/deleteuser",method = RequestMethod.GET)
 	public String deleteUser(Model model, HttpSession session){
 		UserDTO user = (UserDTO) session.getAttribute("userDTO");
-		userService.deleteUser(user);
+		userService.deleteUser(user.getId());
 		session.invalidate();
-		model.addAttribute("userDTO", new UserDTO());
+		model.addAttribute("profileDTO", new ProfileDTO());
 		return "pages/index";
 	}
 }

@@ -20,7 +20,7 @@ import java.util.Locale;
 @Transactional
 public class MoveDaoImpl implements MoveDAO {
 
-	private final Logger LOGGER = Logger.getLogger(getClass());
+	private static final Logger LOGGER = Logger.getLogger(MoveDaoImpl.class);
 
 	@Autowired
 	public SessionFactory sessionFactory;
@@ -44,7 +44,7 @@ public class MoveDaoImpl implements MoveDAO {
 		Query query = sessionFactory.getCurrentSession().createQuery(moveHQL);
 		query.setParameter("user_id", user.getId());
 		LOGGER.info(messageSource.getMessage("dao.move.getMoveByUser", new Object[]{user}, Locale.ENGLISH));
-		return (List<MoveEntity>) query.getSingleResult();
+		return (List<MoveEntity>) query.getResultList();
 	}
 
 

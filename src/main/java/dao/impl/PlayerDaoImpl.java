@@ -18,7 +18,7 @@ import java.util.Locale;
 @Transactional
 public class PlayerDaoImpl implements PlayerDAO {
 
-	private final Logger LOGGER = Logger.getLogger(getClass());
+	private static final Logger LOGGER = Logger.getLogger(PlayerDaoImpl.class);
 
 	@Autowired
 	public SessionFactory sessionFactory;

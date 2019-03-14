@@ -10,6 +10,6 @@ public interface GameService {
 	List<Game> getGameByStatus (String status);
 	Game getGameByID (Long id);
 	void saveOfUpdate(Game game);
-	void delete (Game game);
+	void delete (Long id);
 
 }

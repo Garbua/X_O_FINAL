@@ -41,7 +41,7 @@
     </h3>
     <br>
 
-    <form:form method="POST" action="/registration" modelAttribute="user_info">
+    <form:form method="POST" action="/registration" modelAttribute="profileDTO">
         <table align="center">
 
             <tr>

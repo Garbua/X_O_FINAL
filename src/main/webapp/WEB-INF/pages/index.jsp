@@ -49,7 +49,7 @@
 
     </h3>
 
-        <form:form method="POST" action="/login" modelAttribute="userDTO">
+        <form:form method="POST" action="/login" modelAttribute="profileDTO">
     <table align="center">
 
         <tr>

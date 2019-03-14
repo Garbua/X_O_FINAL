@@ -18,7 +18,7 @@ import java.util.Locale;
 @Transactional
 public class GameDaoImpl implements GameDAO {
 
-	private final Logger LOGGER = Logger.getLogger(getClass());
+	private static final Logger LOGGER = Logger.getLogger(GameDaoImpl.class);
 
 	@Autowired
 	public SessionFactory sessionFactory;
@@ -53,7 +53,8 @@ public class GameDaoImpl implements GameDAO {
 	}
 
 	@Override
-	public void delete(Game game) {
+	public void delete(Long id) {
+		Game game = getGameByID(id);
 		sessionFactory.getCurrentSession().delete(game);
 		LOGGER.info(messageSource.getMessage("dao.game.delete", new Object[]{game}, Locale.ENGLISH));
 	}

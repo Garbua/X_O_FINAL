@@ -19,7 +19,7 @@ import java.util.Locale;
 @Transactional
 public class UserDaoImpl implements UserDAO {
 
-	private final Logger LOGGER = Logger.getLogger(getClass());
+	private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
 	@Autowired
 	private MessageSource messageSource;
@@ -27,6 +27,15 @@ public class UserDaoImpl implements UserDAO {
 	@Autowired
 	public SessionFactory sessionFactory;
 
+
+	@Override
+	public UserEntity getUserById(Long id) {
+		String userHQL = "FROM UserEntity WHERE id = :id";
+		Query query = sessionFactory.getCurrentSession().createQuery(userHQL);
+		query.setParameter("id", id);
+		LOGGER.info(messageSource.getMessage("dao.user.getById", new Object[]{id}, Locale.ENGLISH));
+		return (UserEntity) query.uniqueResult();
+	}
 
 	/**
 	 * Метод поиска пользователя в БД по его логину
@@ -59,8 +68,9 @@ public class UserDaoImpl implements UserDAO {
 	 * @param user - удаляемый объект пользователя
 	 */
 	@Override
-	public void deleteUser(UserDTO user) {
-		sessionFactory.getCurrentSession().delete(getUserByLogin(user.getLogin()));
+	public void deleteUser(Long id) {
+		UserEntity user = getUserById(id);
+		sessionFactory.getCurrentSession().delete(user);
 		LOGGER.info(messageSource.getMessage("dao.user.delete", new Object[]{user}, Locale.ENGLISH));
 
 	}

@@ -1,5 +1,7 @@
 package controllers;
+import dto.ProfileDTO;
 import dto.UserDTO;
+import org.apache.log4j.Logger;
 import service.UserService;
 import validators.login.LoginValid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class LoginController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String outUser(Model model) {
-		model.addAttribute("userDTO", new UserDTO());
+		model.addAttribute("profileDTO", new ProfileDTO());
 		return "pages/index";
 	}
 
@@ -37,24 +39,27 @@ public class LoginController {
 	 * Метод POST страницы авторизации
 	 * @param model
 	 * @param session - запись логина ипароля в сессию
-	 * @param userDTO - объект с логином и паролем введённые пользователем
+	 * @param profileDTO - объект с логином и паролем введённые пользователем
 	 * @param result - ошибки при валидации введённых данных
 	 * @return - если есть ошибки - возврат на страницу авторизации, если нет то передаёт работу валидатору БД.
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String checkUser(Model model, HttpSession session, @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+	public String checkUser(Model model, HttpSession session, @Valid @ModelAttribute("profileDTO") ProfileDTO profileDTO,
 	                        BindingResult result ) {
 
-		loginValid.validate(userDTO, result);
+		loginValid.validate(profileDTO, result);
 
 		if (result.hasErrors()) {
 			return "pages/index";
 
-		} else if (userService.loginExists(userDTO.getLogin())) {
+		} else if (userService.loginExists(profileDTO.getLogin())) {
 
-			if (userService.passwordCorrect(userDTO.getPassword(), userDTO.getLogin())) {
+			if (userService.passwordCorrect(profileDTO.getPassword(), profileDTO.getLogin())) {
 
 				if (session.getAttribute("userDTO") == null) {
+					UserDTO userDTO = new UserDTO();
+					userDTO.setId(profileDTO.getId());
+					userDTO.setLogin(profileDTO.getLogin());
 					session.setAttribute("userDTO", userDTO);
 					return "/pages/gameLogin";
 				}
@@ -81,7 +86,7 @@ public class LoginController {
 	@RequestMapping(value = "/exit", method = RequestMethod.GET)
 	public String exit(HttpSession session, Model model) {
 		session.invalidate();
-		model.addAttribute("userDTO", new UserDTO());
+		model.addAttribute("profileDTO", new ProfileDTO());
 		return "pages/index";
 	}
 }

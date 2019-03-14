@@ -3,6 +3,7 @@ package controllers;
 import dto.GamePoleDTO;
 import dto.UserDTO;
 import entity.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Controller
 public class GameUserAiController {
+
+	private static final Logger LOG = Logger.getLogger(GameUserAiController.class);
 	@Autowired
 	private GameService gameService;
 	@Autowired
@@ -41,33 +43,21 @@ public class GameUserAiController {
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
 	public String gameUserAiGet(Model model, HttpServletRequest request){
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-			String s = StatusGame.valueOf("New").getName();
 			Game game = new Game();
-			game.setStatus(s);
+			game.setStatus(EnumConstants.STARTED);
 			gameService.saveOfUpdate(game);
-		request.setAttribute("idGame", gameService.getGameByStatus(s).get(0).getId_game());
+		request.setAttribute("idGame", gameService.getGameByStatus(EnumConstants.STARTED).get(0).getId_game());
 		model.addAttribute("gKey", gamePoleDTO);
-
-//		if(gameService.getGameByStatus("Started") == null) {
-//			String s = StatusGame.valueOf("Started").getName();
-//			Game game = new Game();
-//			game.setStatus(s);
-//			gameService.saveOfUpdate(game);
-//		}else {
-//			displayGame(gameService.getGameByStatus("Started"), gamePoleDTO);
-//		}
-//		request.setAttribute("idGame", gameService.getGameByStatus("Started").getId_game());
-//
-//		model.addAttribute("gKey", gamePoleDTO);
+		LOG.info("Started processing");
 		return "pages/aiGame";
 	}
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET, params = "continue")
 	public String continueGameUserAiGet(Model model, HttpServletRequest request){
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-		if(gameService.getGameByStatus("Started") != null) {
-			displayGame(gameService.getGameByStatus("Started").get(0), gamePoleDTO);
-			request.setAttribute("idGame", gameService.getGameByStatus("Started").get(0).getId_game());
+		if(gameService.getGameByStatus(EnumConstants.STARTED) != null) {
+			displayGame(gameService.getGameByStatus(EnumConstants.STARTED).get(0), gamePoleDTO);
+			request.setAttribute("idGame", gameService.getGameByStatus(EnumConstants.STARTED).get(0).getId_game());
 			model.addAttribute("gKey", gamePoleDTO);
 		}else {
 			return "pages/gameLogin";
@@ -80,19 +70,19 @@ public class GameUserAiController {
 	                             @Valid@ModelAttribute("gKey") GamePoleDTO gPole, BindingResult result, Model model){
 		if(!result.hasErrors()) {
 			Game game = gameService.getGameByID(idGame);
-			game.setStatus(StatusGame.Started.getName());
+			game.setStatus(EnumConstants.STARTED);
 			gameService.saveOfUpdate(game);
 //			Мой ход :
 			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
 			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
 			createMove(game,gPole,user);
 //			Проверка победителя:
-			checkWinner( "x", gPole, game, request);
+			checkWinner( EnumConstants.X, gPole, game, request);
 //			Ход компьютера:
-			UserEntity ai = userService.getUserByLogin("AI");
+			UserEntity ai = userService.getUserByLogin(EnumConstants.AI);
 			createMoveAi(game,gPole, ai,request);
 //			Проверка победителя:
-			checkWinner( "o", gPole, game, request);
+			checkWinner( EnumConstants.O, gPole, game, request);
 
 		}
 		return "pages/aiGame";
@@ -104,7 +94,7 @@ public class GameUserAiController {
 		MoveEntity moveEntity = null;
 		MoveEntity move = new MoveEntity();
 
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < EnumConstants.S * EnumConstants.S; i++) {
 		String mv = gPole.getgAll().get(i);
 		try {
 			moveEntity = moveService.getMoveByGamePole(game,String.valueOf(i));
@@ -154,7 +144,7 @@ public class GameUserAiController {
 	public void createMoveAi (Game game,GamePoleDTO gPole,UserEntity ai,HttpServletRequest request){
 		String rPole = ai(gPole);
 		Map<Integer, String> gPoleNew = gPole.getgAll();
-		gPoleNew.put(Integer.valueOf(rPole), "o");
+		gPoleNew.put(Integer.valueOf(rPole), EnumConstants.O);
 		gPole.setgAll(gPoleNew);
 		request.setAttribute("p" + rPole, gPole.getgAll().get(rPole));
 //		MoveEntity moveAi = new MoveEntity();
@@ -172,7 +162,7 @@ public class GameUserAiController {
 		String randomPole = null;
 		List<Integer> free = new ArrayList<>();
 		Map<Integer, String> map = gamePoleDTO.getgAll();
-		for (int i = 0; i < 9 ; i++) {
+		for (int i = 0; i < EnumConstants.S * EnumConstants.S ; i++) {
 			if(map.get(i) == null || "".equalsIgnoreCase(map.get(i)))
 				free.add(i);
 		}
@@ -188,6 +178,7 @@ public class GameUserAiController {
 
 	public void checkWinner(String key,GamePoleDTO gamePoleDTO,Game game,HttpServletRequest request) {
 
+LOG.debug("Started check winner");
 		String winner = "";
 //Вопрос как мне в winner записать результат одной из проверок, что бы передать потом на запись победителя в метод saveWinDb()?
 
@@ -213,10 +204,10 @@ public class GameUserAiController {
 
 	public String horizontalCheck(String key,GamePoleDTO gamePoleDTO,Game game){
 		String winner = "";
-		for (int i = 0; i < 9; i += 3) {
+		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S) {
 			if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
 				winner = key;
-				for (int j = 0; j < 3; j++) {
+				for (int j = 0; j < EnumConstants.S; j++) {
 					if (!gamePoleDTO.getgAll().get(i + j).equalsIgnoreCase(key)) {
 						winner = "";
 						break;
@@ -229,11 +220,11 @@ public class GameUserAiController {
 
 	public String verticalCheck(String key,GamePoleDTO gamePoleDTO, Game game){
 		String winner = "";
-		for (int i = 0; i < 9; i += 3) {
+		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S) {
 			if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")){
 				winner = key;
-				for (int j = 0; j < 3; j++) {
-					if (!gamePoleDTO.getgAll().get((i / 3) + (j * 3)).equalsIgnoreCase(key)) {
+				for (int j = 0; j < EnumConstants.S; j++) {
+					if (!gamePoleDTO.getgAll().get((i / EnumConstants.S) + (j * EnumConstants.S)).equalsIgnoreCase(key)) {
 						winner = "";
 						break;
 					}
@@ -247,7 +238,7 @@ public class GameUserAiController {
 		String winner = "";
 		if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
 			winner = key;
-			for (int i = 0; i < 9; i += 3 + 1) {
+			for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S + 1) {
 				if (!gamePoleDTO.getgAll().get(i).equalsIgnoreCase(key)) {
 					winner = "";
 				}
@@ -261,7 +252,7 @@ public class GameUserAiController {
 		String winner = "";
 		if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
 			winner = key;
-			for (int i = 3 - 1; i < 8; i += 2) {
+			for (int i = EnumConstants.S - 1; i < (EnumConstants.S * EnumConstants.S) - 1; i += EnumConstants.S - 1) {
 				if (!gamePoleDTO.getgAll().get(i).equalsIgnoreCase(key)) {
 					winner = "";
 				}
@@ -273,7 +264,7 @@ public class GameUserAiController {
 	public String drawCheck(GamePoleDTO gamePoleDTO, Game game){
 		String winner = "";
 		if (!gamePoleDTO.getgAll().containsValue("")&& "".equalsIgnoreCase(game.getWinner().getLogin())) {
-			 winner = "n";
+			 winner = EnumConstants.STANDOFF;
 		}
 		return winner;
 	}
@@ -281,18 +272,18 @@ public class GameUserAiController {
 	public void saveWinDb (String winner, Game game, HttpServletRequest request){
 		if (!"".equalsIgnoreCase(winner)) {
 			Game refGame = game;
-			if (!"".equalsIgnoreCase(winner) && !"n".equalsIgnoreCase(winner)) {
+			if (!"".equalsIgnoreCase(winner) && !EnumConstants.STANDOFF.equalsIgnoreCase(winner)) {
 				UserEntity user = playerService.getPlayerByGameSign(game, winner).getUser();
 				refGame.setWinner(user);
-				refGame.setStatus(StatusGame.valueOf("Complete").getName());
+				refGame.setStatus(EnumConstants.COMPLETE);
 				gameService.saveOfUpdate(refGame);
 				String win = user.getLogin();
 				request.setAttribute("win", win);
 			} else {
-				if (!"".equalsIgnoreCase(winner) && "n".equalsIgnoreCase(winner)) {
-					UserEntity n = userService.getUserByLogin("Standoff");
+				if (!"".equalsIgnoreCase(winner) && EnumConstants.STANDOFF.equalsIgnoreCase(winner)) {
+					UserEntity n = userService.getUserByLogin(EnumConstants.STANDOFF);
 					refGame.setWinner(n);
-					refGame.setStatus(StatusGame.valueOf("Complete").getName());
+					refGame.setStatus(EnumConstants.COMPLETE);
 					gameService.saveOfUpdate(refGame);
 					request.setAttribute("win", "label.winNO");
 				}
