@@ -38,80 +38,91 @@ public class GameUserAiController {
 	private UserService userService;
 
 
-
-
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
-	public String gameUserAiGet(Model model, HttpServletRequest request){
+	public String gameUserAiGet(Model model, HttpServletRequest request) {
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-			Game game = new Game();
-			game.setStatus(EnumConstants.STARTED);
-			gameService.saveOfUpdate(game);
-		request.setAttribute("idGame", gameService.getGameByStatus(EnumConstants.STARTED).get(0).getId_game());
+		Game game = new Game();
+		game.setStatus(EnumConstants.NEW);
+		gameService.saveOfUpdate(game);
+		List<Game> games = gameService.getGameByStatus(EnumConstants.NEW);
+		for (Game g : games) {
+			if (g.getStatus().equalsIgnoreCase(EnumConstants.NEW) && g.getStatus() != null) {
+				request.setAttribute("idGame", g.getId_game());
+			}
+		}
 		model.addAttribute("gKey", gamePoleDTO);
 		LOG.info("Started processing");
 		return "pages/aiGame";
 	}
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET, params = "continue")
-	public String continueGameUserAiGet(Model model, HttpServletRequest request){
+	public String continueGameUserAiGet(Model model, HttpServletRequest request) {
 		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-		if(gameService.getGameByStatus(EnumConstants.STARTED) != null) {
+		if (gameService.getGameByStatus(EnumConstants.STARTED) != null) {
 			displayGame(gameService.getGameByStatus(EnumConstants.STARTED).get(0), gamePoleDTO);
 			request.setAttribute("idGame", gameService.getGameByStatus(EnumConstants.STARTED).get(0).getId_game());
 			model.addAttribute("gKey", gamePoleDTO);
-		}else {
+		} else {
 			return "pages/gameLogin";
 		}
 		return "pages/aiGame";
 	}
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.POST)
-	public String gameUserAiPost(HttpServletRequest request, @RequestParam ("idGame") long idGame, HttpSession session,
-	                             @Valid@ModelAttribute("gKey") GamePoleDTO gPole, BindingResult result, Model model){
-		if(!result.hasErrors()) {
+	public String gameUserAiPost(HttpServletRequest request, @RequestParam("idGame") long idGame, HttpSession session,
+	                             @Valid @ModelAttribute("gKey") GamePoleDTO gPole, BindingResult result, Model model) {
+		if (!result.hasErrors()) {
 			Game game = gameService.getGameByID(idGame);
 			game.setStatus(EnumConstants.STARTED);
 			gameService.saveOfUpdate(game);
 //			Мой ход :
 			UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
-			UserEntity user = userService.getUserByLogin(userDTO.getLogin());
-			createMove(game,gPole,user);
+			UserEntity user = userService.getUserById(userDTO.getId());
+			createMove(game, gPole, user);
 //			Проверка победителя:
-			checkWinner( EnumConstants.X, gPole, game, request);
-//			Ход компьютера:
-			UserEntity ai = userService.getUserByLogin(EnumConstants.AI);
-			createMoveAi(game,gPole, ai,request);
-//			Проверка победителя:
-			checkWinner( EnumConstants.O, gPole, game, request);
-
+			String loginWin = checkWinner(playerService.getPlayerByUserGame(user, game).getSign(), gPole, game, request);
+			if (!loginWin.equalsIgnoreCase("")){
+				request.setAttribute("win", loginWin);
+				return "pages/winner";
+			}else {
+//				Ход компьютера:
+				UserEntity ai = userService.getUserByLogin(EnumConstants.AI);
+				createMoveAi(game, gPole, ai, request);
+//				Проверка победителя:
+				String aiWin = checkWinner(playerService.getPlayerByUserGame(ai, game).getSign(), gPole, game, request);
+				if (!aiWin.equalsIgnoreCase("")){
+					request.setAttribute("win", aiWin);
+					return "pages/winner";
+				}
+			}
 		}
 		return "pages/aiGame";
 	}
 
 
-	public void createMove(Game game,GamePoleDTO gPole, UserEntity user){
+	public void createMove(Game game, GamePoleDTO gPole, UserEntity user) {
 
 		MoveEntity moveEntity = null;
 		MoveEntity move = new MoveEntity();
 
-	for (int i = 0; i < EnumConstants.S * EnumConstants.S; i++) {
-		String mv = gPole.getgAll().get(i);
-		try {
-			moveEntity = moveService.getMoveByGamePole(game,String.valueOf(i));
-			if (!("".equalsIgnoreCase(mv) && "".equalsIgnoreCase(moveEntity.getMove()))) {
-				moveService.saveOfUpdate(moveEntity);
-			}
-		}catch (NoResultException nre){
-			if (!"".equalsIgnoreCase(mv)){
-				move.setGame(game);
-				move.setPole(String.valueOf(i));
-				move.setMove(mv);
-				move.setUser(user);
-				moveService.saveOfUpdate(move);
-				createPlayer(move,game,user);
+		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i++) {
+			String mv = gPole.getgAll().get(i);
+			try {
+				moveEntity = moveService.getMoveByGamePole(game, String.valueOf(i));
+				if (!("".equalsIgnoreCase(mv) && "".equalsIgnoreCase(moveEntity.getMove()))) {
+					moveService.saveOfUpdate(moveEntity);
+				}
+			} catch (NoResultException nre) {
+				if (!"".equalsIgnoreCase(mv)) {
+					move.setGame(game);
+					move.setPole(String.valueOf(i));
+					move.setMove(mv);
+					move.setUser(user);
+					moveService.saveOfUpdate(move);
+					createPlayer(move, game, user);
+				}
 			}
 		}
-	}
 	}
 
 	public void displayGame(Game game, GamePoleDTO gamePoleDTO) {
@@ -122,16 +133,16 @@ public class GameUserAiController {
 		gamePoleDTO.setgAll(gPole2);
 	}
 
-	public void createPlayer(MoveEntity move, Game game, UserEntity user){
-		if ( game.getWinner() == null ) {
+	public void createPlayer(MoveEntity move, Game game, UserEntity user) {
+		if (game.getWinner() == null) {
 			Player playerDb = null;
 			try {
-				playerDb = playerService.getPlayerByUserGame(user,game);
-				if (playerDb != null){
+				playerDb = playerService.getPlayerByUserGame(user, game);
+				if (playerDb != null) {
 					playerService.saveOfUpdate(playerDb);
 				}
 
-			}catch (NoResultException n){
+			} catch (NoResultException n) {
 				Player player = new Player();
 				player.setUser(user);
 				player.setGame(game);
@@ -141,7 +152,7 @@ public class GameUserAiController {
 		}
 	}
 
-	public void createMoveAi (Game game,GamePoleDTO gPole,UserEntity ai,HttpServletRequest request){
+	public void createMoveAi(Game game, GamePoleDTO gPole, UserEntity ai, HttpServletRequest request) {
 		String rPole = ai(gPole);
 		Map<Integer, String> gPoleNew = gPole.getgAll();
 		gPoleNew.put(Integer.valueOf(rPole), EnumConstants.O);
@@ -154,16 +165,16 @@ public class GameUserAiController {
 //		moveAi.setGame(game);
 //		moveService.saveOfUpdate(moveAi);
 //		saveOfUpdate(moveAi,game,ai);
-		createMove(game,gPole,ai);
+		createMove(game, gPole, ai);
 	}
 
-	public String ai( GamePoleDTO gamePoleDTO) {
+	public String ai(GamePoleDTO gamePoleDTO) {
 		Random random = new Random();
 		String randomPole = null;
 		List<Integer> free = new ArrayList<>();
 		Map<Integer, String> map = gamePoleDTO.getgAll();
-		for (int i = 0; i < EnumConstants.S * EnumConstants.S ; i++) {
-			if(map.get(i) == null || "".equalsIgnoreCase(map.get(i)))
+		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i++) {
+			if (map.get(i) == null || "".equalsIgnoreCase(map.get(i)))
 				free.add(i);
 		}
 
@@ -173,103 +184,93 @@ public class GameUserAiController {
 		}
 		free.clear();
 
-		return randomPole ;
+		return randomPole;
 	}
 
-	public void checkWinner(String key,GamePoleDTO gamePoleDTO,Game game,HttpServletRequest request) {
+	public String checkWinner(String key, GamePoleDTO gamePoleDTO, Game game, HttpServletRequest request) {
 
-LOG.debug("Started check winner");
-		String winner = "";
-//Вопрос как мне в winner записать результат одной из проверок, что бы передать потом на запись победителя в метод saveWinDb()?
+		LOG.debug("Started check winner");
 
-		// проверка горизонтали
-		winner = horizontalCheck(key, gamePoleDTO, game);
-
-		//проверка вертикали
-		winner = verticalCheck(key, gamePoleDTO, game);
-
-		//проверка диагонали 0-4-8
-		winner = diagonalCheck1(key, gamePoleDTO, game);
-
-		//проверка диагонали 2-4-6
-		winner = diagonalCheck2(key, gamePoleDTO, game);
-
-		//проверка ничьей
-		winner = drawCheck(gamePoleDTO, game);
-
-//		Запись победителя:
-		saveWinDb(winner, game, request);
-
+		if (horizontalCheck(key, gamePoleDTO, game) == true ||
+				verticalCheck(key, gamePoleDTO, game) == true ||
+				diagonalCheck1(key, gamePoleDTO, game) == true ||
+				diagonalCheck2(key, gamePoleDTO, game) == true) {
+			return saveWinDb(key, game, request);
+		}else if (drawCheck(gamePoleDTO, game) == true){
+			return saveWinDb(EnumConstants.STANDOFF, game, request);
+		}
+		return "";
 	}
 
-	public String horizontalCheck(String key,GamePoleDTO gamePoleDTO,Game game){
-		String winner = "";
+	public boolean horizontalCheck(String key, GamePoleDTO gamePoleDTO, Game game) {
+		boolean winner = false;
 		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S) {
 			if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
-				winner = key;
+				winner = true;
 				for (int j = 0; j < EnumConstants.S; j++) {
 					if (!gamePoleDTO.getgAll().get(i + j).equalsIgnoreCase(key)) {
-						winner = "";
+						winner = false;
 						break;
 					}
 				}
-			}else return winner;
+			} else return winner;
 		}
 		return winner;
 	}
 
-	public String verticalCheck(String key,GamePoleDTO gamePoleDTO, Game game){
-		String winner = "";
+	public boolean verticalCheck(String key, GamePoleDTO gamePoleDTO, Game game) {
+		boolean winner = false;
 		for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S) {
-			if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")){
-				winner = key;
+			if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
+				winner = true;
 				for (int j = 0; j < EnumConstants.S; j++) {
 					if (!gamePoleDTO.getgAll().get((i / EnumConstants.S) + (j * EnumConstants.S)).equalsIgnoreCase(key)) {
-						winner = "";
+						winner = false;
 						break;
 					}
 				}
-			}else return winner;
+			} else return winner;
 		}
 		return winner;
 	}
 
-	public String diagonalCheck1(String key,GamePoleDTO gamePoleDTO, Game game){
-		String winner = "";
+	public boolean diagonalCheck1(String key, GamePoleDTO gamePoleDTO, Game game) {
+		boolean winner = false;
 		if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
-			winner = key;
+			winner = true;
 			for (int i = 0; i < EnumConstants.S * EnumConstants.S; i += EnumConstants.S + 1) {
 				if (!gamePoleDTO.getgAll().get(i).equalsIgnoreCase(key)) {
-					winner = "";
+					winner = false;
 				}
 			}
-		}else return winner;
+		} else return winner;
 
 		return winner;
 	}
 
-	public String diagonalCheck2(String key,GamePoleDTO gamePoleDTO,Game game){
-		String winner = "";
+	public boolean diagonalCheck2(String key, GamePoleDTO gamePoleDTO, Game game) {
+		boolean winner = false;
 		if (game.getWinner() == null || game.getWinner().getLogin().equalsIgnoreCase("")) {
-			winner = key;
+			winner = true;
 			for (int i = EnumConstants.S - 1; i < (EnumConstants.S * EnumConstants.S) - 1; i += EnumConstants.S - 1) {
 				if (!gamePoleDTO.getgAll().get(i).equalsIgnoreCase(key)) {
-					winner = "";
+					winner = false;
 				}
 			}
-		}else return winner;
+		} else return winner;
 		return winner;
 	}
 
-	public String drawCheck(GamePoleDTO gamePoleDTO, Game game){
-		String winner = "";
-		if (!gamePoleDTO.getgAll().containsValue("")&& "".equalsIgnoreCase(game.getWinner().getLogin())) {
-			 winner = EnumConstants.STANDOFF;
+	public boolean drawCheck(GamePoleDTO gamePoleDTO, Game game) {
+		boolean winner = false;
+		if (!gamePoleDTO.getgAll().containsValue("") && "".equalsIgnoreCase(game.getWinner().getLogin())) {
+			winner = true;
 		}
 		return winner;
 	}
 
-	public void saveWinDb (String winner, Game game, HttpServletRequest request){
+	public String saveWinDb(String winner, Game game, HttpServletRequest request) {
+		String win = "";
 		if (!"".equalsIgnoreCase(winner)) {
 			Game refGame = game;
 			if (!"".equalsIgnoreCase(winner) && !EnumConstants.STANDOFF.equalsIgnoreCase(winner)) {
@@ -277,17 +278,18 @@ LOG.debug("Started check winner");
 				refGame.setWinner(user);
 				refGame.setStatus(EnumConstants.COMPLETE);
 				gameService.saveOfUpdate(refGame);
-				String win = user.getLogin();
-				request.setAttribute("win", win);
+				win = "Winner : " + user.getLogin();
+
 			} else {
 				if (!"".equalsIgnoreCase(winner) && EnumConstants.STANDOFF.equalsIgnoreCase(winner)) {
-					UserEntity n = userService.getUserByLogin(EnumConstants.STANDOFF);
+					UserEntity n = userService.getUserByLogin(winner);
 					refGame.setWinner(n);
 					refGame.setStatus(EnumConstants.COMPLETE);
 					gameService.saveOfUpdate(refGame);
-					request.setAttribute("win", "label.winNO");
+					win = "label.winNO" + "  : STANDOFF";
 				}
 			}
 		}
+		return win;
 	}
 }

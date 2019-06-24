@@ -12,13 +12,22 @@
   <properties>
     <spring.version.testname.c16>4.3.2.RELEASE</spring.version.testname.c16>
     <hibernate.version>5.2.2.Final</hibernate.version>
+    <javax.servlet-api.version>4.0.0-b06</javax.servlet-api.version>
+    <jstl.version>1.2</jstl.version>
+    <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
+    <fasterxml.jackson.version>2.9.6</fasterxml.jackson.version>
+    <commons-validator.version>1.4.0</commons-validator.version>
+    <javax.validation.version>1.1.0.Final</javax.validation.version>
+    <junit.version>4.12</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <mysql.version>8.0.11</mysql.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.0-b06</version>
+      <version>${javax.servlet-api.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
     <dependency>
@@ -43,12 +52,12 @@
     <dependency>
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
     </dependency>
     <dependency>
-    <groupId>javax.servlet.jsp</groupId>
-    <artifactId>javax.servlet.jsp-api</artifactId>
-    <version>2.3.1</version>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>${javax.servlet.jsp.version}</version>
     <!--<scope>provided</scope> -->
     </dependency>
 
@@ -56,26 +65,26 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.6</version>
+      <version>${fasterxml.jackson.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.9.6</version>
+      <version>${fasterxml.jackson.version}</version>
     </dependency>
 
     <!--валидация данных-->
     <dependency>
       <groupId>commons-validator</groupId>
       <artifactId>commons-validator</artifactId>
-      <version>1.4.0</version>
+      <version>${commons-validator.version}</version>
     </dependency>
 
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <version>1.1.0.Final</version>
+      <version>${javax.validation.version}</version>
     </dependency>
 
     <dependency>
@@ -88,21 +97,21 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <version>${log4j.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.11</version>
+      <version>${mysql.version}</version>
     </dependency>
 
     <dependency>

@@ -42,6 +42,8 @@
     <br>
 
     <form:form method="POST" action="/registration" modelAttribute="profileDTO">
+
+        <form:hidden path="id"/>
         <table align="center">
 
             <tr>

@@ -1,6 +1,7 @@
 package controllers;
 import dto.ProfileDTO;
 import dto.UserDTO;
+import entity.UserEntity;
 import org.apache.log4j.Logger;
 import service.UserService;
 import validators.login.LoginValid;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping(value ="/login")
 public class LoginController {
+	private static final Logger LOG = Logger.getLogger(LoginController.class);
 
 	@Autowired
 	private LoginValid loginValid;
@@ -57,10 +59,13 @@ public class LoginController {
 			if (userService.passwordCorrect(profileDTO.getPassword(), profileDTO.getLogin())) {
 
 				if (session.getAttribute("userDTO") == null) {
+					UserEntity userEntity = userService.getUserByLogin(profileDTO.getLogin());
 					UserDTO userDTO = new UserDTO();
-					userDTO.setId(profileDTO.getId());
-					userDTO.setLogin(profileDTO.getLogin());
+					userDTO.setId(userEntity.getId());
+					userDTO.setLogin(userEntity.getLogin());
 					session.setAttribute("userDTO", userDTO);
+					LOG.info("Create userDTO in session id:  "+ userDTO.getId());
+					LOG.info("profileDTO_login :  "+ profileDTO.getLogin());
 					return "/pages/gameLogin";
 				}
 				model.addAttribute("form_error", "label.error0");

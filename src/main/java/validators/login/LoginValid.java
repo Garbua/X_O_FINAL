@@ -1,5 +1,6 @@
 package validators.login;
 
+import dto.ProfileDTO;
 import dto.UserDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -10,7 +11,7 @@ import org.springframework.validation.Validator;
 public class LoginValid implements Validator {
 	@Override
 	public boolean supports(Class<?> aClass) {
-		return UserDTO.class.isAssignableFrom(aClass);
+		return ProfileDTO.class.isAssignableFrom(aClass);
 	}
 
 	/**
@@ -20,12 +21,11 @@ public class LoginValid implements Validator {
 	 */
 	@Override
 	public void validate(Object o, Errors errors) {
-	UserDTO userDTO = (UserDTO) o;
-
+		ProfileDTO profileDTO = (ProfileDTO) o;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "login.empty",
 				"Login must not be empty!");
 
-		String login = userDTO.getLogin();
+		String login = profileDTO.getLogin();
 		if((login.length()) > 16){
 			errors.rejectValue("login", "login.tooLong", "Login must not more than 16 characters.");
 		}
@@ -33,7 +33,7 @@ public class LoginValid implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.empty",
 				"Password must not be empty!");
 
-		String password = userDTO.getPassword();
+		String password = profileDTO.getPassword();
 		if((password.length()) < 6){
 			errors.rejectValue("password", "password.tooLong",
 					"The password must contain at least 6 characters.");
