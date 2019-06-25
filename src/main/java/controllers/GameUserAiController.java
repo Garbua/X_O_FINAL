@@ -16,6 +16,7 @@ import service.GameService;
 import service.MoveService;
 import service.PlayerService;
 import service.UserService;
+import service.impl.GameUserAiService;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,32 +37,21 @@ public class GameUserAiController {
 	private PlayerService playerService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GameUserAiService gameUserAiService;
 
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET)
-	public String gameUserAiGet(Model model, HttpServletRequest request) {
-		GamePoleDTO gamePoleDTO = new GamePoleDTO();
-		Game game = new Game();
-		game.setStatus(EnumConstants.NEW);
-		gameService.saveOfUpdate(game);
-		List<Game> games = gameService.getGameByStatus(EnumConstants.NEW);
-		for (Game g : games) {
-			if (g.getStatus().equalsIgnoreCase(EnumConstants.NEW) && g.getStatus() != null) {
-				request.setAttribute("idGame", g.getId_game());
-			}
-		}
-		model.addAttribute("gKey", gamePoleDTO);
+	public String gameUserAiGet(Model model) {
+		model.addAttribute("gKey", gameUserAiService.getNewGameAi());
 		LOG.info("Started processing");
 		return "pages/aiGame";
 	}
 
 	@RequestMapping(value = "/aigame", method = RequestMethod.GET, params = "continue")
 	public String continueGameUserAiGet(Model model, HttpServletRequest request) {
-		GamePoleDTO gamePoleDTO = new GamePoleDTO();
 		if (gameService.getGameByStatus(EnumConstants.STARTED) != null) {
-			displayGame(gameService.getGameByStatus(EnumConstants.STARTED).get(0), gamePoleDTO);
-			request.setAttribute("idGame", gameService.getGameByStatus(EnumConstants.STARTED).get(0).getId_game());
-			model.addAttribute("gKey", gamePoleDTO);
+			model.addAttribute("gKey", gameUserAiService.getContinueGameAi());
 		} else {
 			return "pages/gameLogin";
 		}
@@ -125,13 +115,7 @@ public class GameUserAiController {
 		}
 	}
 
-	public void displayGame(Game game, GamePoleDTO gamePoleDTO) {
-		Map<Integer, String> gPole2 = new HashMap<>();
-		for (MoveEntity m : moveService.getMoveByGame(game)) {
-			gPole2.put(Integer.valueOf(m.getPole()), m.getMove());
-		}
-		gamePoleDTO.setgAll(gPole2);
-	}
+
 
 	public void createPlayer(MoveEntity move, Game game, UserEntity user) {
 		if (game.getWinner() == null) {
