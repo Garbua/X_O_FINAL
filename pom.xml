@@ -18,7 +18,7 @@
     <fasterxml.jackson.version>2.9.6</fasterxml.jackson.version>
     <commons-validator.version>1.4.0</commons-validator.version>
     <javax.validation.version>1.1.0.Final</javax.validation.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <mysql.version>8.0.11</mysql.version>
   </properties>
