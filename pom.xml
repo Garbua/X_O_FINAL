@@ -11,7 +11,7 @@
 
   <properties>
     <spring.version.testname.c16>4.3.2.RELEASE</spring.version.testname.c16>
-    <hibernate.version>5.2.2.Final</hibernate.version>
+    <hibernate.version>5.4.24.Final</hibernate.version>
     <javax.servlet-api.version>4.0.0-b06</javax.servlet-api.version>
     <jstl.version>1.2</jstl.version>
     <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
