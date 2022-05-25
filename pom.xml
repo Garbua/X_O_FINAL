@@ -10,7 +10,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <spring.version.testname.c16>4.3.2.RELEASE</spring.version.testname.c16>
+    <spring.version.testname.c16>5.2.22.RELEASE</spring.version.testname.c16>
     <hibernate.version>5.2.2.Final</hibernate.version>
     <javax.servlet-api.version>4.0.0-b06</javax.servlet-api.version>
     <jstl.version>1.2</jstl.version>
